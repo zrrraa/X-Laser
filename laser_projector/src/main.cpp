@@ -503,7 +503,7 @@ void IRAM_ATTR SPIRenderer::draw()
     spi_transaction_t t1 = {};
     t1.length = 16;
     t1.flags = SPI_TRANS_USE_TXDATA;
-    t1.tx_data[0] = 0b11010000 | ((x >> 8) & 0xF); 
+    t1.tx_data[0] = 0b11010000 | ((x >> 8) & 0xF);
     t1.tx_data[1] = x & 255;
     // 发送数据为1101 XXXX XXXX XXXX
     spi_device_polling_transmit(spi, &t1);
