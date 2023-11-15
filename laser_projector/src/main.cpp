@@ -43,12 +43,12 @@ volatile unsigned long timeStart;
 void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
 {
   AwsFrameInfo *info = (AwsFrameInfo *)arg;
-  // µ¥Ö¡
+  // å•å¸§
   if (info->final && info->index == 0 && info->len == len)
   {
     handleStream(data, len, 0, info->len);
   }
-  // ¶àÖ¡
+  // å¤šå¸§
   else
   {
     if (info->index == 0)
@@ -215,7 +215,7 @@ void setupSD()
   }
 }
 
-int buttonState = 0; // ÈÃCore0 ºÍ Core1µÄ²Ù×÷²»ÒªÍ¬Ê±³öÏÖ£¬²»È»¾Í¶Á×Å¶Á×ÅÌøÏÂÒ»¸öÎÄ¼ş¾ÍCrashÁË    ÎŞ²Ù×÷ -1   ÉÏÒ»¸ö 1  ÏÂÒ»¸ö 2  ×Ô¶¯ÏÂÒ»¸ö 3  ²»Òª×Ô¶¯ 4
+int buttonState = 0; // è®©Core0 å’Œ Core1çš„æ“ä½œä¸è¦åŒæ—¶å‡ºç°ï¼Œä¸ç„¶å°±è¯»ç€è¯»ç€è·³ä¸‹ä¸€ä¸ªæ–‡ä»¶å°±Crashäº†    æ— æ“ä½œ -1   ä¸Šä¸€ä¸ª 1  ä¸‹ä¸€ä¸ª 2  è‡ªåŠ¨ä¸‹ä¸€ä¸ª 3  ä¸è¦è‡ªåŠ¨ 4
 
 void goNext()
 {
@@ -357,7 +357,7 @@ bool ILDAFile::tickNextFrame()
     {
       cur_frame = 0;
       if (digitalRead(4) == HIGH)
-      { // Happy°´Å¥£¬×Ô¶¯ÏÂÒ»¸ö
+      { // HappyæŒ‰é’®ï¼Œè‡ªåŠ¨ä¸‹ä¸€ä¸ª
         nextMedia(1);
       }
       else
@@ -366,7 +366,7 @@ bool ILDAFile::tickNextFrame()
     return true;
   }
   else
-    return false; // This frame has been buffered and not display yet.. ¸ÃÖ¡ÒÑ»º´æÇÒÎ´Render£¬¿ÉÄÜÊÇ¶ÁÎÄ¼ş¡¢´®Á÷Ì«¿ìÁË£¿ºöÊÓµô¾ÍºÃ 0w0
+    return false; // This frame has been buffered and not display yet.. è¯¥å¸§å·²ç¼“å­˜ä¸”æœªRenderï¼Œå¯èƒ½æ˜¯è¯»æ–‡ä»¶ã€ä¸²æµå¤ªå¿«äº†ï¼Ÿå¿½è§†æ‰å°±å¥½ 0w0
 }
 
 #define bufferLen 6
@@ -437,7 +437,7 @@ bool ILDAFile::parseStream(uint8_t *data, size_t len, int frameIndex, int totalL
     return true;
   }
   else
-    return false; // This frame has been buffered and not display yet.. ¸ÃÖ¡ÒÑ»º´æÇÒÎ´Render£¬¿ÉÄÜÊÇ¶ÁÎÄ¼ş¡¢´®Á÷Ì«¿ìÁË£¿ºöÊÓµô¾ÍºÃ 0w0
+    return false; // This frame has been buffered and not display yet.. è¯¥å¸§å·²ç¼“å­˜ä¸”æœªRenderï¼Œå¯èƒ½æ˜¯è¯»æ–‡ä»¶ã€ä¸²æµå¤ªå¿«äº†ï¼Ÿå¿½è§†æ‰å°±å¥½ 0w0
 }
 
 // DRAW ==================================================
@@ -492,8 +492,8 @@ void IRAM_ATTR SPIRenderer::draw()
   if (draw_position < ilda->frames[frame_position].number_records)
   {
     const ILDA_Record_t &instruction = ilda->frames[frame_position].records[draw_position];
-    int y = 2048 + (instruction.x * 1024) / 32768; // Î»ÖÃĞÅºÅÒÔÁ½¸ö×Ö½ÚÔÚILDAÎÄ¼şÖĞ´¢´æ
-    int x = 2048 + (instruction.y * 1024) / 32768; // -32768~+32768-->1024~3072£¬½«Î»ÖÃĞÅºÅ×ª»¯Îª12Î»Êı¾İ
+    int y = 2048 + (instruction.x * 1024) / 32768; // ä½ç½®ä¿¡å·ä»¥ä¸¤ä¸ªå­—èŠ‚åœ¨ILDAæ–‡ä»¶ä¸­å‚¨å­˜
+    int x = 2048 + (instruction.y * 1024) / 32768; // -32768~+32768-->1024~3072ï¼Œå°†ä½ç½®ä¿¡å·è½¬åŒ–ä¸º12ä½æ•°æ®
     // Serial.print(instruction.x);
     // Serial.print(" ");
     // Serial.println(instruction.y);
@@ -505,7 +505,7 @@ void IRAM_ATTR SPIRenderer::draw()
     t1.flags = SPI_TRANS_USE_TXDATA;
     t1.tx_data[0] = 0b11010000 | ((x >> 8) & 0xF); 
     t1.tx_data[1] = x & 255;
-    // ·¢ËÍÊı¾İÎª1101 XXXX XXXX XXXX
+    // å‘é€æ•°æ®ä¸º1101 XXXX XXXX XXXX
     spi_device_polling_transmit(spi, &t1);
 
     // channel B
@@ -514,10 +514,10 @@ void IRAM_ATTR SPIRenderer::draw()
     t2.flags = SPI_TRANS_USE_TXDATA;
     t2.tx_data[0] = 0b01010000 | ((y >> 8) & 0xF);
     t2.tx_data[1] = y & 255;
-    // ·¢ËÍÊı¾İÎª0101 XXXX XXXX XXXX
+    // å‘é€æ•°æ®ä¸º0101 XXXX XXXX XXXX
     spi_device_polling_transmit(spi, &t2);
 
-    // °Ñ¼¤¹â¿ªÆô¡ı
+    // æŠŠæ¿€å…‰å¼€å¯â†“
     if ((instruction.status_code & 0b01000000) == 0)
     {
       if (instruction.color <= 9)
@@ -555,7 +555,7 @@ void IRAM_ATTR SPIRenderer::draw()
       }
     }
     else
-    { // ²»ÁÁµÄPoint
+    { // ä¸äº®çš„Point
       digitalWrite(PIN_NUM_LASER_R, HIGH);
       digitalWrite(PIN_NUM_LASER_G, HIGH);
       digitalWrite(PIN_NUM_LASER_B, HIGH);
@@ -630,7 +630,7 @@ void SPIRenderer::start()
       &fileBufferHandle, 0);
 }
 
-// Current ILDA Buffer  µ±Ç°µÄILDAÄÚ´æ£¬²ÉÓÃBufferµÄĞÎÊ½£¬ÎªÁËÄÜ¸ü¿ìµÄ¼ÓÔØ´óĞÍILDAÎÄ¼ş¡£¶¯Ì¬¶ÁÈ¡ÎÄ¼ş£¬ÉêÇëÄÚ´æ£¬±ÜÃâÒ»ÏÂ×Ó°ÑÕû¸öILDAÎÄ¼şµÄËùÓĞÖ¡µÄÄÚ´æ¶¼ÉêÇëÁË£¨Ã»ÓĞÄÇÃ´¶àPSRAM£©
+// Current ILDA Buffer  å½“å‰çš„ILDAå†…å­˜ï¼Œé‡‡ç”¨Bufferçš„å½¢å¼ï¼Œä¸ºäº†èƒ½æ›´å¿«çš„åŠ è½½å¤§å‹ILDAæ–‡ä»¶ã€‚åŠ¨æ€è¯»å–æ–‡ä»¶ï¼Œç”³è¯·å†…å­˜ï¼Œé¿å…ä¸€ä¸‹å­æŠŠæ•´ä¸ªILDAæ–‡ä»¶çš„æ‰€æœ‰å¸§çš„å†…å­˜éƒ½ç”³è¯·äº†ï¼ˆæ²¡æœ‰é‚£ä¹ˆå¤šPSRAMï¼‰
 uint8_t chunkTemp[64];
 int tempLen = 0;
 
