@@ -3,7 +3,9 @@
 ILDA_Header_t header;
 File file;
 unsigned long frameStart;
+
 ILDAFile *ilda = new ILDAFile();
+// ILDAFile *ilda;
 static const char *TAG = "ilda";
 
 ILDAFile::ILDAFile()
@@ -22,7 +24,7 @@ ILDAFile::~ILDAFile()
 void ILDAFile::dump_header(const ILDA_Header_t &header)
 {
   char tmp[100];
-  strncpy(tmp, header.ilda, 4);
+  strncpy(tmp, header.ILDA, 4);
   tmp[5] = '\0';
   ESP_LOGI(TAG, "Header: %s", tmp);
   ESP_LOGI(TAG, "Format Code: %d", header.format);

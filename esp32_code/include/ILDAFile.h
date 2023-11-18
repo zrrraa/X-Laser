@@ -9,7 +9,7 @@
 
 typedef struct
 {
-    char ilda[4];
+    char ILDA[4];
     uint8_t reserved1[3];
     uint8_t format;
     char frame_name[8];

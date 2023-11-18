@@ -50,7 +50,7 @@ void IRAM_ATTR SPIRenderer::draw()
   {
     const ILDA_Record_t &instruction = ilda->frames[frame_position].records[draw_position];
     int y = 2048 + (instruction.x * 1024) / 32768; // 位置信号以两个字节在ILDA文件中储存
-    int x = 2048 + (instruction.y * 1024) / 32768; // -32768~+32768-->1024~3072，将位置信号转化为12位数据
+    int x = 2048 + (instruction.y * 1024) / 32768; // -32767~+32767-->1024~3072，将位置信号转化为12位数据
     // Serial.print(instruction.x);
     // Serial.print(" ");
     // Serial.println(instruction.y);
@@ -74,7 +74,7 @@ void IRAM_ATTR SPIRenderer::draw()
     // 发送数据为0101 XXXX XXXX XXXX
     spi_device_polling_transmit(spi, &t2);
 
-    // 把激光开启↓
+    // 判断激光状态标志位和颜色
     if ((instruction.status_code & 0b01000000) == 0)
     {
       if (instruction.color <= 9)
@@ -177,25 +177,33 @@ void SPIRenderer::start()
 
   // 实现任务的函数名称（task1）；任务的任何名称（“ task1”等）；分配给任务的堆栈大小，以字为单位；任务输入参数（可以为NULL）；任务的优先级（0是最低优先级）；任务句柄（可以为NULL）；任务将运行的内核ID（0或1）
   xTaskCreatePinnedToCore(
-      fileBufferLoop, "fileBufferHandle", 5000 // Stack size
+      fileBufferLoop, "fileBufferHandle", 4096 // Stack size
       ,
       NULL, 3 // Priority
       ,
-      &fileBufferHandle, 0); // 创建在pro_cpu，即内核0上
-
-  Serial.println("FileBufferLoop task creat on Core 0");
+      &fileBufferHandle, 0); // 0 pro_cpu  1 app_cpu
+  // vTaskDelay(4000 / portTICK_PERIOD_MS); // 4s
+  Serial.println("FileBufferLoop task create on Core 0");
 }
 
 void nextMedia(int position)
 {
+  // delete ilda;
+  // ilda = new ILDAFile();
+
+  // curMedia = curMedia + position;
+  // Serial.println(position);
+  // Serial.println(curMedia);
+  // Serial.println(avaliableMedia.size());
   curMedia = curMedia + position;
-  if (curMedia >= avaliableMedia.size())
-  {
-    curMedia = 0;
-  }
+  // Serial.println(curMedia);
   if (curMedia < 0)
   {
     curMedia = avaliableMedia.size() - 1;
+  }
+  if (curMedia >= avaliableMedia.size()) // 先做大于等于的判断会出错，size是无符号数，-1>=size成立
+  {
+    curMedia = 0;
   }
   String filePath = String("/ILDA/") += avaliableMedia[curMedia].as<String>();
   ilda->cur_frame = 0;

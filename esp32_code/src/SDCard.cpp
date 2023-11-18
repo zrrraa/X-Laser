@@ -36,7 +36,7 @@ void setupSD()
   }
 
   uint64_t cardSize = SD.cardSize() / (1024 * 1024);
-  Serial.printf("SD Card Size: %lluMB\n", cardSize);
+  Serial.printf("SD Card Size: %lluMB\r\n", cardSize);
 
   root = SD.open("/ILDA");
   while (true)

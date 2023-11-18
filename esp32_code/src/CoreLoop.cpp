@@ -1,12 +1,17 @@
 #include "CoreLoop.h"
 
-bool isStreaming = false;
 unsigned long timeDog = 0;
+
+// int kppsTime = 1000000 / (20 * 1000);
+// volatile unsigned long timeOld;
+// volatile unsigned long timeStart;
 
 void fileBufferLoop(void *pvParameters)
 {
   for (;;)
   {
+    // Serial.print("fileBufferLoop running on core ");
+    // Serial.println(xPortGetCoreID());
     if (millis() - timeDog > 1000)
     {
       timeDog = millis();
@@ -34,3 +39,18 @@ void fileBufferLoop(void *pvParameters)
     }
   }
 }
+
+// void Draw_Task(void *pvParameters)
+// {
+//   for (;;)
+//   {
+//     if (micros() - timeOld >= kppsTime)
+//     {
+//       timeOld = micros();
+//       draw_task();
+//     }
+//     button_loop();
+//     //Serial.print("mainLoop running on core ");
+//     //Serial.println(xPortGetCoreID());
+//   }
+// }

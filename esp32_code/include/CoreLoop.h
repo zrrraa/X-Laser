@@ -8,8 +8,9 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
-extern bool isStreaming;
+
 
 void fileBufferLoop(void *pvParameters);
+// void Draw_Task(void *pvParameters);
 
 #endif /* H_CORELOOP_H */

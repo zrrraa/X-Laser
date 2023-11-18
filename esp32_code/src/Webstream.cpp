@@ -4,10 +4,25 @@ AsyncWebServer server(80);
 AsyncWebSocket ws("/ws");
 
 int loadedLen = 0;
+bool isStreaming = false;
 
 // Current ILDA Buffer  当前的ILDA内存，采用Buffer的形式，为了能更快的加载大型ILDA文件。动态读取文件，申请内存，避免一下子把整个ILDA文件的所有帧的内存都申请了（没有那么多PSRAM）
 uint8_t chunkTemp[64];
 int tempLen = 0;
+
+void web_init()
+{
+    WiFi.begin("zrrraa", "zhongrui");
+    server.on("/", HTTP_GET, [](AsyncWebServerRequest *request)
+              { request->redirect("http://bblaser.bbrealm.com/?ip=" + WiFi.localIP().toString()); });
+    AsyncElegantOTA.begin(&server); // Start ElegantOTA
+
+    // attach AsyncWebSocket，接收web端向esp32发送的信息
+    ws.onEvent(onWsEvent);
+    server.addHandler(&ws);
+    DefaultHeaders::Instance().addHeader("Access-Control-Allow-Origin", "*"); // 允许任何源访问该资源
+    server.begin();
+}
 
 void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
 {
@@ -165,17 +180,4 @@ void handleStream(uint8_t *data, size_t len, int index, int totalLen)
         chunkTemp[i] = data[len - newtempLen + i];
     }
     tempLen = newtempLen;
-}
-
-void web_init()
-{
-    WiFi.begin("zrrraa", "zhongrui");
-    server.on("/", HTTP_GET, [](AsyncWebServerRequest *request)
-              { request->redirect("http://bblaser.bbrealm.com/?ip=" + WiFi.localIP().toString()); });
-    AsyncElegantOTA.begin(&server); // Start ElegantOTA
-    // attach AsyncWebSocket
-    ws.onEvent(onWsEvent);
-    server.addHandler(&ws);
-    DefaultHeaders::Instance().addHeader("Access-Control-Allow-Origin", "*");
-    server.begin();
 }
