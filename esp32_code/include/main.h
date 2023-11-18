@@ -13,4 +13,6 @@
 #include "CoreLoop.h"
 #include "Webstream.h"
 
+void Task1code(void *pvParameters);
+
 #endif /* H_MAIN_H */

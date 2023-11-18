@@ -14,15 +14,25 @@ int debug_flag = 0;
 
 void setupRenderer()
 {
-  Serial.print("RAM Before:");
-  Serial.println(ESP.getFreeHeap());
+  // Serial.print("RAM Before:");
+  // Serial.println(ESP.getFreeHeap());
   ilda->frames = (ILDA_Frame_t *)malloc(sizeof(ILDA_Frame_t) * bufferFrames);
+  if (ilda->frames == NULL)
+  {
+    Serial.println("ilda->frames ERROR: Failed to allocate");
+    while(1);
+  }
   for (int i = 0; i < bufferFrames; i++)
   {
     ilda->frames[i].records = (ILDA_Record_t *)malloc(sizeof(ILDA_Record_t) * MAXRECORDS);
+    if (ilda->frames[i].records == NULL)
+    {
+      Serial.printf("ilda->frames[%d].records ERROR: Failed to allocate\r\n", i);
+      while(1);
+    }
   }
-  Serial.print("RAM After:");
-  Serial.println(ESP.getFreeHeap());
+  // Serial.print("RAM After:");
+  // Serial.println(ESP.getFreeHeap());
   nextMedia(1);
   renderer = new SPIRenderer();
   renderer->start();
@@ -75,9 +85,9 @@ void IRAM_ATTR SPIRenderer::draw()
     spi_device_polling_transmit(spi, &t2);
 
     // Serial.println(instruction.status_code);
-    //  判断激光状态标志位和颜色
+    // 判断激光状态标志位和颜色
     if ((instruction.status_code & 0b01000000) == 0) // 一直是这里instruction出错，难道没有分配成功内存？
-    // 这里根据文件定义，应该是不等于0时会亮才对，暂时不懂
+    // 这里根据文件定义，应该是不等于0时会亮才对，不懂
     {
       if (instruction.color <= 9)
       { // RED
@@ -135,7 +145,7 @@ void IRAM_ATTR SPIRenderer::draw()
     // debug_flag++;
     if (frame_position >= bufferFrames)
     {
-      
+
       frame_position = 0;
     }
     if (!isStreaming) // 现阶段无用
@@ -181,7 +191,7 @@ void SPIRenderer::start()
 
   // 实现任务的函数名称（task1）；任务的任何名称（“ task1”等）；分配给任务的堆栈大小，以字为单位；任务输入参数（可以为NULL）；任务的优先级（0是最低优先级）；任务句柄（可以为NULL）；任务将运行的内核ID（0或1）
   xTaskCreatePinnedToCore(
-      fileBufferLoop, "fileBufferHandle", 4096 // Stack size
+      fileBufferLoop, "fileBufferHandle", 5000 // Stack size
       ,
       NULL, 3 // Priority
       ,

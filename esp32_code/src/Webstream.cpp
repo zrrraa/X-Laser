@@ -26,14 +26,15 @@ void web_init()
     // server.begin();
 
     // 加上这一段才不会有内存问题，不知道为什么
+    // 甚至不能加上后面那句ESP_LOGI
     // Serial.println("Connected");
     // Serial.print("IP Address:");
     // Serial.println(WiFi.localIP());
     server.on("/", HTTP_GET, handleRoot); // 注册链接"/"与对应回调函数
     server.begin();                       // 启动服务器
-    //Serial.println("Web server started");
-    //ESP_LOGI(TAGWEB, "WIFI running on core %d", xPortGetCoreID());
-    //Serial.println(xPortGetCoreID());
+    // Serial.println("Web server started");
+    // ESP_LOGI(TAGWEB, "WIFI running on core %d", xPortGetCoreID());
+    // Serial.println(xPortGetCoreID());
 }
 
 void handleRoot(AsyncWebServerRequest *request) // 回调函数

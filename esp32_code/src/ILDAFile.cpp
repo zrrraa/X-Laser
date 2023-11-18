@@ -62,7 +62,7 @@ bool ILDAFile::tickNextFrame()
   {
     // modify
     frames[cur_buffer].isBuffered = true;
-    
+
     frames[cur_buffer].number_records = header.records;
 
     // frames[cur_buffer].records = (ILDA_Record_t *)malloc(sizeof(ILDA_Record_t) * header.records);
@@ -99,5 +99,5 @@ bool ILDAFile::tickNextFrame()
     return true;
   }
   else
-    return false; // This frame has been buffered and not display yet.. 该帧已缓存且未Render，可能是读文件、串流太快了？忽视掉就好 0w0
+    return false; // This frame has been buffered and not display yet.. 该帧已缓存且未Render，可能是读文件、串流太快了？忽视掉就好
 }

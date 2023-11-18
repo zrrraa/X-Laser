@@ -40,6 +40,8 @@ int kppsTime = 1000000 / (20 * 1000);
 volatile unsigned long timeOld;
 volatile unsigned long timeStart;
 
+static const char *TAG = "ilda";
+
 void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
 {
   AwsFrameInfo *info = (AwsFrameInfo *)arg;
@@ -85,7 +87,7 @@ void onWsEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventTyp
   if (type == WS_EVT_CONNECT)
   {
     // client connected
-    ESP_LOGI("ws[%s][%u] connect\n", server->url(), client->id());
+    ESP_LOGI(TAG, "ws[%s][%u] connect\n", server->url(), client->id());
     // client->printf("I am bbLaser :)", client->id());
     // client->ping();
     isStreaming = true;
@@ -93,7 +95,7 @@ void onWsEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventTyp
   else if (type == WS_EVT_DISCONNECT)
   {
     // client disconnecteds
-    ESP_LOGI("ws[%s][%u] disconnect: %u\n", server->url(), client->id());
+    ESP_LOGI(TAG, "ws[%s][%u] disconnect: %u\n", server->url(), client->id());
     isStreaming = false;
   }
   else if (type == WS_EVT_DATA)
@@ -157,7 +159,7 @@ void click(Button2 &btn)
 // utils ==========================================================================================
 
 File root;
-static const char *TAG = "ilda";
+
 const int bufferFrames = 3;
 
 DynamicJsonDocument doc(4096);
