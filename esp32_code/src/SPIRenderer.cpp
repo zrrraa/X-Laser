@@ -21,7 +21,6 @@ void setupRenderer()
   {
     ilda->frames[i].records = (ILDA_Record_t *)malloc(sizeof(ILDA_Record_t) * MAXRECORDS);
   }
-  delay(1000);
   Serial.print("RAM After:");
   Serial.println(ESP.getFreeHeap());
   nextMedia(1);
@@ -49,7 +48,7 @@ void IRAM_ATTR SPIRenderer::draw()
 
   if (draw_position < ilda->frames[frame_position].number_records) // 这一帧还没画完
   {
-    ILDA_Record_t &instruction = ilda->frames[frame_position].records[draw_position];
+    const ILDA_Record_t &instruction = ilda->frames[frame_position].records[draw_position];
     int y = 2048 + (instruction.x * 1024) / 32768; // 位置信号以两个字节在ILDA文件中储存
     int x = 2048 + (instruction.y * 1024) / 32768; // -32767~+32767-->1024~3072，将位置信号转化为12位数据
     // Serial.print(instruction.x);
@@ -128,6 +127,7 @@ void IRAM_ATTR SPIRenderer::draw()
   }
   else
   {
+    ESP_LOGI(TAGRENDERER, "SPIRenderer running on core %d", xPortGetCoreID());
     ilda->frames[frame_position].isBuffered = false;
     draw_position = 0;
     frame_position++;
@@ -135,6 +135,7 @@ void IRAM_ATTR SPIRenderer::draw()
     // debug_flag++;
     if (frame_position >= bufferFrames)
     {
+      
       frame_position = 0;
     }
     if (!isStreaming) // 现阶段无用

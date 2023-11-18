@@ -11,7 +11,7 @@ void setup()
 {
   Serial.begin(115200);
   setupSD();
-  // web_init();
+  //web_init();
   setupRenderer();
   button_init();
   // xTaskCreatePinnedToCore(Draw_Task, "drawing", 8192, NULL, 1, &drawing, 1);

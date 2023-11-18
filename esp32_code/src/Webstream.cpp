@@ -14,15 +14,32 @@ static const char *TAGWEB = "WEB";
 void web_init()
 {
     WiFi.begin("zrrraa", "zhongrui");
-    server.on("/", HTTP_GET, [](AsyncWebServerRequest *request)
-              { request->redirect("http://bblaser.bbrealm.com/?ip=" + WiFi.localIP().toString()); });
-    AsyncElegantOTA.begin(&server); // Start ElegantOTA
 
-    // attach AsyncWebSocket，接收web端向esp32发送的信息
-    ws.onEvent(onWsEvent);
-    server.addHandler(&ws);
-    DefaultHeaders::Instance().addHeader("Access-Control-Allow-Origin", "*"); // 允许任何源访问该资源
-    server.begin();
+    // server.on("/", HTTP_GET, [](AsyncWebServerRequest *request)
+    //           { request->redirect("http://bblaser.bbrealm.com/?ip=" + WiFi.localIP().toString()); });
+    // AsyncElegantOTA.begin(&server); // Start ElegantOTA
+
+    // // attach AsyncWebSocket，接收web端向esp32发送的信息
+    // ws.onEvent(onWsEvent);
+    // server.addHandler(&ws);
+    // DefaultHeaders::Instance().addHeader("Access-Control-Allow-Origin", "*"); // 允许任何源访问该资源
+    // server.begin();
+
+    // 加上这一段才不会有内存问题，不知道为什么
+    // Serial.println("Connected");
+    // Serial.print("IP Address:");
+    // Serial.println(WiFi.localIP());
+    server.on("/", HTTP_GET, handleRoot); // 注册链接"/"与对应回调函数
+    server.begin();                       // 启动服务器
+    //Serial.println("Web server started");
+    //ESP_LOGI(TAGWEB, "WIFI running on core %d", xPortGetCoreID());
+    //Serial.println(xPortGetCoreID());
+}
+
+void handleRoot(AsyncWebServerRequest *request) // 回调函数
+{
+    Serial.println("User requested.");
+    request->send(200, "text/plain", "Hello World!"); // 向客户端发送响应和内容
 }
 
 void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)

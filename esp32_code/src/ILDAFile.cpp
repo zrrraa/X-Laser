@@ -57,12 +57,15 @@ bool ILDAFile::read(fs::FS &fs, const char *fname)
 
 bool ILDAFile::tickNextFrame()
 {
+  ESP_LOGI(TAGILDA, "tickNextFrame running on core %d", xPortGetCoreID());
   if (frames[cur_buffer].isBuffered == false)
   {
-    // frames[cur_buffer].isBuffered = true;
+    // modify
+    frames[cur_buffer].isBuffered = true;
+    
     frames[cur_buffer].number_records = header.records;
 
-    //frames[cur_buffer].records = (ILDA_Record_t *)malloc(sizeof(ILDA_Record_t) * header.records);
+    // frames[cur_buffer].records = (ILDA_Record_t *)malloc(sizeof(ILDA_Record_t) * header.records);
 
     ILDA_Record_t *records = frames[cur_buffer].records;
     for (int i = 0; i < header.records; i++)
@@ -86,12 +89,12 @@ bool ILDAFile::tickNextFrame()
     if (cur_frame > file_frames - 1)
     {
       cur_frame = 0;
-      if (digitalRead(4) == HIGH)
-      { // 自动按钮，还未加
-        nextMedia(1);
-      }
-      else
-        nextMedia(0);
+      // if (digitalRead(4) == HIGH)
+      // { // 自动按钮，还未加
+      //   nextMedia(1);
+      // }
+      // else
+      nextMedia(0);
     }
     return true;
   }
