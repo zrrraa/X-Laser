@@ -14,7 +14,7 @@ typedef struct
     uint8_t format;
     char frame_name[8];
     char company_name[8];
-    volatile uint16_t records;
+    uint16_t records;
     uint16_t frame_number;
     uint16_t total_frames;
     uint8_t projector_number;
@@ -23,11 +23,11 @@ typedef struct
 
 typedef struct
 {
-    volatile int16_t x;
-    volatile int16_t y;
-    volatile int16_t z;
-    volatile uint8_t status_code;
-    volatile uint8_t color;
+    int16_t x;
+    int16_t y;
+    int16_t z;
+    uint8_t status_code;
+    uint8_t color;
 } ILDA_Record_t;
 
 typedef struct
@@ -49,9 +49,9 @@ public:
     bool tickNextFrame();
     bool parseStream(uint8_t *data, size_t len, int index, int totalLen);
     ILDA_Frame_t *frames;
-    volatile int file_frames;
-    volatile int cur_frame;
-    volatile int cur_buffer;
+    int file_frames;
+    int cur_frame;
+    int cur_buffer;
 };
 
 extern ILDAFile *ilda;

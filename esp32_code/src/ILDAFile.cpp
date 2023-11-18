@@ -6,7 +6,7 @@ unsigned long frameStart;
 
 ILDAFile *ilda = new ILDAFile();
 // ILDAFile *ilda;
-static const char *TAG = "ilda";
+static const char *TAGILDA = "ILDA";
 
 ILDAFile::ILDAFile()
 {
@@ -26,16 +26,16 @@ void ILDAFile::dump_header(const ILDA_Header_t &header)
   char tmp[100];
   strncpy(tmp, header.ILDA, 4);
   tmp[5] = '\0';
-  ESP_LOGI(TAG, "Header: %s", tmp);
-  ESP_LOGI(TAG, "Format Code: %d", header.format);
+  ESP_LOGI(TAGILDA, "Header: %s", tmp);
+  ESP_LOGI(TAGILDA, "Format Code: %d", header.format);
   strncpy(tmp, header.frame_name, 8);
   tmp[8] = '\0';
-  ESP_LOGI(TAG, "Frame Name: %s", tmp);
+  ESP_LOGI(TAGILDA, "Frame Name: %s", tmp);
   strncpy(tmp, header.company_name, 8);
   tmp[8] = '\0';
-  ESP_LOGI(TAG, "Company Name: %s", tmp);
-  ESP_LOGI(TAG, "Number records: %d", header.records);
-  ESP_LOGI(TAG, "Number frames: %d", header.total_frames);
+  ESP_LOGI(TAGILDA, "Company Name: %s", tmp);
+  ESP_LOGI(TAGILDA, "Number records: %d", header.records);
+  ESP_LOGI(TAGILDA, "Number frames: %d", header.total_frames);
 }
 
 bool ILDAFile::read(fs::FS &fs, const char *fname)
@@ -61,7 +61,9 @@ bool ILDAFile::tickNextFrame()
   {
     // frames[cur_buffer].isBuffered = true;
     frames[cur_buffer].number_records = header.records;
-    // frames[cur_buffer].records = (ILDA_Record_t *)malloc(sizeof(ILDA_Record_t) * header.records);
+
+    //frames[cur_buffer].records = (ILDA_Record_t *)malloc(sizeof(ILDA_Record_t) * header.records);
+
     ILDA_Record_t *records = frames[cur_buffer].records;
     for (int i = 0; i < header.records; i++)
     {

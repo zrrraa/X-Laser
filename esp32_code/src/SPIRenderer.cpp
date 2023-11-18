@@ -1,7 +1,7 @@
 #include "SPIRenderer.h"
 
 const int bufferFrames = 3;
-
+static const char *TAGRENDERER = "SPI";
 // Ticker drawer;
 SPIRenderer *renderer;
 DynamicJsonDocument doc(4096);
@@ -21,6 +21,7 @@ void setupRenderer()
   {
     ilda->frames[i].records = (ILDA_Record_t *)malloc(sizeof(ILDA_Record_t) * MAXRECORDS);
   }
+  delay(1000);
   Serial.print("RAM After:");
   Serial.println(ESP.getFreeHeap());
   nextMedia(1);
@@ -48,7 +49,7 @@ void IRAM_ATTR SPIRenderer::draw()
 
   if (draw_position < ilda->frames[frame_position].number_records) // 这一帧还没画完
   {
-    const ILDA_Record_t &instruction = ilda->frames[frame_position].records[draw_position];
+    ILDA_Record_t &instruction = ilda->frames[frame_position].records[draw_position];
     int y = 2048 + (instruction.x * 1024) / 32768; // 位置信号以两个字节在ILDA文件中储存
     int x = 2048 + (instruction.y * 1024) / 32768; // -32767~+32767-->1024~3072，将位置信号转化为12位数据
     // Serial.print(instruction.x);
@@ -74,8 +75,10 @@ void IRAM_ATTR SPIRenderer::draw()
     // 发送数据为0101 XXXX XXXX XXXX
     spi_device_polling_transmit(spi, &t2);
 
-    // 判断激光状态标志位和颜色
-    if ((instruction.status_code & 0b01000000) == 0)
+    // Serial.println(instruction.status_code);
+    //  判断激光状态标志位和颜色
+    if ((instruction.status_code & 0b01000000) == 0) // 一直是这里instruction出错，难道没有分配成功内存？
+    // 这里根据文件定义，应该是不等于0时会亮才对，暂时不懂
     {
       if (instruction.color <= 9)
       { // RED
@@ -182,8 +185,9 @@ void SPIRenderer::start()
       NULL, 3 // Priority
       ,
       &fileBufferHandle, 0); // 0 pro_cpu  1 app_cpu
+  // delay(5000);
   // vTaskDelay(4000 / portTICK_PERIOD_MS); // 4s
-  Serial.println("FileBufferLoop task create on Core 0");
+  ESP_LOGI(TAGRENDERER, "FileBufferLoop task create on Core 0");
 }
 
 void nextMedia(int position)
@@ -208,5 +212,5 @@ void nextMedia(int position)
   String filePath = String("/ILDA/") += avaliableMedia[curMedia].as<String>();
   ilda->cur_frame = 0;
   ilda->read(SD, filePath.c_str());
-  Serial.println("This animation has finished playing");
+  ESP_LOGI(TAGRENDERER, "animation start!");
 }

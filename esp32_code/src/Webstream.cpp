@@ -1,5 +1,4 @@
 #include "Webstream.h"
-
 AsyncWebServer server(80);
 AsyncWebSocket ws("/ws");
 
@@ -9,6 +8,8 @@ bool isStreaming = false;
 // Current ILDA Buffer  当前的ILDA内存，采用Buffer的形式，为了能更快的加载大型ILDA文件。动态读取文件，申请内存，避免一下子把整个ILDA文件的所有帧的内存都申请了（没有那么多PSRAM）
 uint8_t chunkTemp[64];
 int tempLen = 0;
+
+static const char *TAGWEB = "WEB";
 
 void web_init()
 {
@@ -67,7 +68,7 @@ void onWsEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventTyp
     if (type == WS_EVT_CONNECT)
     {
         // client connected
-        ESP_LOGI("ws[%s][%u] connect\n", server->url(), client->id());
+        ESP_LOGI(TAGWEB, "ws[%s][%u] connect\n", server->url(), client->id());
         // client->printf("I am bbLaser :)", client->id());
         // client->ping();
         isStreaming = true;
@@ -75,7 +76,7 @@ void onWsEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventTyp
     else if (type == WS_EVT_DISCONNECT)
     {
         // client disconnecteds
-        ESP_LOGI("ws[%s][%u] disconnect: %u\n", server->url(), client->id());
+        ESP_LOGI(TAGWEB, "ws[%s][%u] disconnect: %u\n", server->url(), client->id());
         isStreaming = false;
     }
     else if (type == WS_EVT_DATA)
@@ -86,6 +87,7 @@ void onWsEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventTyp
 
 bool ILDAFile::parseStream(uint8_t *data, size_t len, int frameIndex, int totalLen)
 {
+    ESP_LOGI(TAGWEB, "parseStream begin!");
     if (frames[cur_buffer].isBuffered == false)
     {
         // frames[cur_buffer].isBuffered = true;
@@ -155,6 +157,7 @@ bool ILDAFile::parseStream(uint8_t *data, size_t len, int frameIndex, int totalL
 
 void handleStream(uint8_t *data, size_t len, int index, int totalLen)
 {
+    ESP_LOGI(TAGWEB, "handleStream begin!");
     // Serial.println("Stream");
     int newtempLen = (tempLen + len) % 6;
     // Serial.print("newTemp:");
