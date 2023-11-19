@@ -57,7 +57,7 @@ bool ILDAFile::read(fs::FS &fs, const char *fname)
 
 bool ILDAFile::tickNextFrame()
 {
-  ESP_LOGI(TAGILDA, "tickNextFrame running on core %d", xPortGetCoreID());
+  //ESP_LOGI(TAGILDA, "tickNextFrame running on core %d", xPortGetCoreID());
   if (frames[cur_buffer].isBuffered == false)
   {
     // modify

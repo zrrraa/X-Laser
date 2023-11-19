@@ -6,18 +6,22 @@
 #include "ui.h"
 #include "Arduino.h"
 
+int buttonState = 0;
+
 void draw_sdcardfile_1(lv_event_t *e)
 {
 	// Your code here
 	//digitalWrite(26, HIGH);
-	goPrev();
+	buttonState = 1;
+	//Serial.println("buttonL clicked");
 }
 
 void draw_sdcardfile_2(lv_event_t *e)
 {
 	// Your code here
 	//digitalWrite(26, LOW);
-	goNext();
+	buttonState = 2;
+	//Serial.println("buttonR clicked");
 }
 
 void draw_sdcardfile_3(lv_event_t *e)

@@ -23,7 +23,7 @@ void fileBufferLoop(void *pvParameters)
     if (!isStreaming)
     {
       //ESP_LOGI(TAGCORE, "fileBufferLoop!");
-      ESP_LOGI(TAGCORE, "fileBufferLoop running on core %d", xPortGetCoreID());
+      //ESP_LOGI(TAGCORE, "fileBufferLoop running on core %d", xPortGetCoreID());
       if (buttonState == 1)
       {
         nextMedia(-1);

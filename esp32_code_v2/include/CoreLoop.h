@@ -12,5 +12,6 @@
 
 void fileBufferLoop(void *pvParameters);
 // void Draw_Task(void *pvParameters);
+extern int buttonState;
 
 #endif /* H_CORELOOP_H */

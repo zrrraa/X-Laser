@@ -20,7 +20,8 @@ void setupRenderer()
   if (ilda->frames == NULL)
   {
     Serial.println("ilda->frames ERROR: Failed to allocate");
-    while(1);
+    while (1)
+      ;
   }
   for (int i = 0; i < bufferFrames; i++)
   {
@@ -28,7 +29,8 @@ void setupRenderer()
     if (ilda->frames[i].records == NULL)
     {
       Serial.printf("ilda->frames[%d].records ERROR: Failed to allocate\r\n", i);
-      while(1);
+      // while(1);
+      i--;
     }
   }
   // Serial.print("RAM After:");
@@ -134,10 +136,11 @@ void IRAM_ATTR SPIRenderer::draw()
     digitalWrite(PIN_NUM_LDAC, HIGH);
 
     draw_position++;
+    // ESP_LOGI(TAGRENDERER, "Draw position++");
   }
   else
   {
-    ESP_LOGI(TAGRENDERER, "SPIRenderer running on core %d", xPortGetCoreID());
+    // ESP_LOGI(TAGRENDERER, "SPIRenderer running on core %d", xPortGetCoreID());
     ilda->frames[frame_position].isBuffered = false;
     draw_position = 0;
     frame_position++;
@@ -191,14 +194,14 @@ void SPIRenderer::start()
 
   // 实现任务的函数名称（task1）；任务的任何名称（“ task1”等）；分配给任务的堆栈大小，以字为单位；任务输入参数（可以为NULL）；任务的优先级（0是最低优先级）；任务句柄（可以为NULL）；任务将运行的内核ID（0或1）
   xTaskCreatePinnedToCore(
-      fileBufferLoop, "fileBufferHandle", 5000 // Stack size
+      fileBufferLoop, "fileBufferHandle", 4096 // Stack size
       ,
       NULL, 3 // Priority
       ,
       &fileBufferHandle, 0); // 0 pro_cpu  1 app_cpu
   // delay(5000);
   // vTaskDelay(4000 / portTICK_PERIOD_MS); // 4s
-  ESP_LOGI(TAGRENDERER, "FileBufferLoop task create on Core 0");
+  // ESP_LOGI(TAGRENDERER, "FileBufferLoop task create on Core 0");
 }
 
 void nextMedia(int position)

@@ -83,14 +83,14 @@ void lcd_init()
     lcd.fillScreen(TFT_GREEN);
     delay(1000);
 #endif
-    Serial.println("Setup done");
+    Serial.println("TFTLCD Setup done");
 }
 
 void lcd_loop()
 {
 #if defined USE_UI
     lv_timer_handler();
-    delay(5);
+    delay(5);//modify delay from 5
 #else
     while (1)
         ;

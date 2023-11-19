@@ -39,7 +39,7 @@ void web_init()
 
 void handleRoot(AsyncWebServerRequest *request) // 回调函数
 {
-    Serial.println("User requested.");
+    //Serial.println("User requested.");
     request->send(200, "text/plain", "Hello World!"); // 向客户端发送响应和内容
 }
 
