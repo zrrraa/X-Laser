@@ -11,9 +11,11 @@
 #include "SPIRenderer.h"
 #include "ILDAFile.h"
 #include "CoreLoop.h"
-#include "Webstream.h"
-#include "MyTFTLCD.h"
+// #include "Webstream.h"
+// #include "MyTFTLCD.h"
 
-void Task1code(void *pvParameters);
+// 不用webstream功能时
+// #define USE_WEB_STREAM
+extern bool isStreaming;
 
 #endif /* H_MAIN_H */

@@ -2,17 +2,13 @@
 
 unsigned long timeDog = 0;
 static const char *TAGCORE = "CORELOOP";
-// int kppsTime = 1000000 / (20 * 1000);
-// volatile unsigned long timeOld;
-// volatile unsigned long timeStart;
 
+// 用于不断地将数据帧缓存到申请的三帧中去。一次fileBufferLoop会将一个数据帧的内容缓存到一个buffer中去
+// fileBufferLoop执行的很快，不停的缓存，如果缓存满了则置于阻塞状态，投影出去，消耗了数据帧后会把它唤醒
 void fileBufferLoop(void *pvParameters)
 {
-  
   for (;;)
   {
-    // Serial.print("fileBufferLoop running on core ");
-    // Serial.println(xPortGetCoreID());
     if (millis() - timeDog > 1000)
     {
       timeDog = millis();
@@ -22,8 +18,8 @@ void fileBufferLoop(void *pvParameters)
     }
     if (!isStreaming)
     {
-      //ESP_LOGI(TAGCORE, "fileBufferLoop!");
-      //ESP_LOGI(TAGCORE, "fileBufferLoop running on core %d", xPortGetCoreID());
+      // ESP_LOGI(TAGCORE, "fileBufferLoop running on core %d", xPortGetCoreID());
+
       if (buttonState == 1)
       {
         nextMedia(-1);
@@ -34,26 +30,10 @@ void fileBufferLoop(void *pvParameters)
         nextMedia(1);
         buttonState = 0;
       }
-      if (!(ilda->tickNextFrame()))
+      if (!(ilda->tickNextFrame())) // 缓存下一帧。如果缓存不成功，说明三帧都已经缓存了，则将fileBufferLoop置于阻塞状态
       {
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
-        // Serial.println("NotifyTake success!");
       }
     }
   }
 }
-
-// void Draw_Task(void *pvParameters)
-// {
-//   for (;;)
-//   {
-//     if (micros() - timeOld >= kppsTime)
-//     {
-//       timeOld = micros();
-//       draw_task();
-//     }
-//     button_loop();
-//     //Serial.print("mainLoop running on core ");
-//     //Serial.println(xPortGetCoreID());
-//   }
-// }

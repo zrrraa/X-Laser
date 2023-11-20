@@ -5,24 +5,27 @@ int kppsTime = 50;
 volatile unsigned long timeOld;
 volatile unsigned long timeStart;
 
+// 不用webstream功能时在这里定义
+bool isStreaming = false;
+
 // TaskHandle_t TFTLCD;
 static const char *TAGMAIN = "MAIN";
 
-void MyUI(void *pvParameters);
+// void MyUI(void *pvParameters);
 
 void setup()
 {
   Serial.begin(115200);
 
   // CS PULL UP
-  digitalWrite(15, HIGH);
-  digitalWrite(21, HIGH);
-  digitalWrite(5, HIGH);
-  digitalWrite(27, HIGH);
+  // digitalWrite(15, HIGH);
+  // digitalWrite(21, HIGH);
+  // digitalWrite(5, HIGH);
+  // digitalWrite(27, HIGH);
 
   setupSD();
 
-  web_init();
+  // web_init();
   // lcd_init();
 
   // xTaskCreatePinnedToCore(
@@ -56,19 +59,19 @@ void loop()
   // Serial.println(xPortGetCoreID());
 }
 
-void MyUI(void *pvParameters)
-{
-  // Serial.print("Task1 running on core ");
-  // Serial.println(xPortGetCoreID());
-  lcd_init();
-  for (;;)
-  {
-    // digitalWrite(led1, HIGH);
-    // delay(1000);
-    // digitalWrite(led1, LOW);
-    // delay(1000);
+// void MyUI(void *pvParameters)
+// {
+//   // Serial.print("Task1 running on core ");
+//   // Serial.println(xPortGetCoreID());
+//   lcd_init();
+//   for (;;)
+//   {
+//     // digitalWrite(led1, HIGH);
+//     // delay(1000);
+//     // digitalWrite(led1, LOW);
+//     // delay(1000);
 
-    // ESP_LOGI(TAGMAIN, "TFTLCD running on core %d", xPortGetCoreID());
-    lcd_loop();
-  }
-}
+//     // ESP_LOGI(TAGMAIN, "TFTLCD running on core %d", xPortGetCoreID());
+//     lcd_loop();
+//   }
+// }
