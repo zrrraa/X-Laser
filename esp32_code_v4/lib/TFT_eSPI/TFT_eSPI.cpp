@@ -638,6 +638,7 @@ void TFT_eSPI::init(uint8_t tc)
   #if !defined(TFT_PARALLEL_8_BIT) && !defined(RP2040_PIO_INTERFACE)
     #if defined (TFT_MOSI) && !defined (TFT_SPI_OVERLAP) && !defined(ARDUINO_ARCH_RP2040) && !defined (ARDUINO_ARCH_MBED)
       spi.begin(TFT_SCLK, TFT_MISO, TFT_MOSI, -1); // This will set MISO to input
+      //Serial.println("LCD SPI begin");//invalid io init 在这之后
     #else
       spi.begin(); // This will set MISO to input
     #endif
@@ -653,7 +654,9 @@ void TFT_eSPI::init(uint8_t tc)
 #if defined (TFT_CS) && !defined(RP2040_PIO_INTERFACE)
   // Set to output once again in case MISO is used for CS
   pinMode(TFT_CS, OUTPUT);
+  //Serial.println("TFT_CS OUTPUT begin");
   digitalWrite(TFT_CS, HIGH); // Chip select high (inactive)
+  //Serial.println("TFT_CS HIGH");
 #elif defined (ESP8266) && !defined (TFT_PARALLEL_8_BIT) && !defined (RP2040_PIO_SPI)
   spi.setHwCs(1); // Use hardware SS toggling
 #endif
@@ -662,7 +665,9 @@ void TFT_eSPI::init(uint8_t tc)
   // Set to output once again in case MISO is used for DC
 #if defined (TFT_DC) && !defined(RP2040_PIO_INTERFACE)
     pinMode(TFT_DC, OUTPUT);
+    //Serial.println("TFT_DC OUTPUT begin");
     digitalWrite(TFT_DC, HIGH); // Data/Command high = data mode
+    //Serial.println("TFT_DC HIGH");
 #endif
 
     _booted = false;
@@ -674,6 +679,7 @@ void TFT_eSPI::init(uint8_t tc)
   #if !defined(RP2040_PIO_INTERFACE)
     // Set to output once again in case MISO is used for TFT_RST
     pinMode(TFT_RST, OUTPUT);
+    //Serial.println("TFT_DC OUTPUT begin");
   #endif
   if (TFT_RST >= 0) {
     digitalWrite(TFT_RST, HIGH);

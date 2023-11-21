@@ -8,6 +8,8 @@ DynamicJsonDocument doc(4096);
 JsonArray avaliableMedia = doc.to<JsonArray>();
 int curMedia = -1;
 
+bool TFTLCD_status = false;
+
 TaskHandle_t fileBufferHandle;
 
 void setupRenderer()
@@ -24,7 +26,7 @@ void setupRenderer()
     while (1)
       ;
   }
-  memset(ilda->frames, 0, sizeof(ILDA_Frame_t) * bufferFrames); //清空初始化的内容，确保isBuffered刚上电时是false
+  memset(ilda->frames, 0, sizeof(ILDA_Frame_t) * bufferFrames); // 清空初始化的内容，确保isBuffered刚上电时是false
 
   for (int i = 0; i < bufferFrames; i++)
   {
@@ -63,7 +65,8 @@ SPIRenderer::SPIRenderer()
 // 开始投影，用IRAM_ATTR将此函数放在RAM中，运行频率更高
 void IRAM_ATTR SPIRenderer::draw()
 {
-  // 这个buffer内已经缓存过内容了，可以投影。————11.20新增的判断条件
+  // 这个buffer内已经缓存过内容了，可以投影
+  // ESP_LOGI(TAGRENDERER, "ilda->frames[frame_position].isBuffered = %d",ilda->frames[frame_position].isBuffered);
   if (ilda->frames[frame_position].isBuffered = true)
   {
     // 这一帧还没画完
@@ -161,9 +164,12 @@ void IRAM_ATTR SPIRenderer::draw()
       // 现阶段无用，isStreaming恒为false
       if (!isStreaming)
       {
-        xTaskNotifyGive(fileBufferHandle); // 唤醒filebufferloop，已经消耗了一个buffer，可以进行一次缓存了
+        // fileBufferLoop工作时TFTLCD要进入阻塞状态，防止SD卡和TFTLCD屏幕在一路SPI上同时工作
+        // TFTLCD_status = false;
 
+        // 唤醒filebufferloop，已经消耗了一个buffer，可以进行一次缓存了
         ESP_LOGI(TAGRENDERER, "A buffered frame has been rendered, fileBufferLoop is notified");
+        xTaskNotifyGive(fileBufferHandle);
       }
     }
   }
@@ -212,6 +218,8 @@ void SPIRenderer::start()
       5,
       &fileBufferHandle,
       0);
+  xTaskNotifyGive(fileBufferHandle);//这个很重要，为了先开始缓存上了好多重保险
+  delay(2000);
 
   // ESP_LOGI(TAGRENDERER, "FileBufferLoop task create on Core 0");
 }
@@ -219,7 +227,6 @@ void SPIRenderer::start()
 // 读取SD卡中的某个ILDA文件
 void nextMedia(int position)
 {
-
   curMedia = curMedia + position;
 
   if (curMedia < 0)
@@ -233,4 +240,5 @@ void nextMedia(int position)
   String filePath = String("/ILDA/") += avaliableMedia[curMedia].as<String>();
   ilda->cur_frame = 0;
   ilda->read(SD, filePath.c_str());
+  ESP_LOGI(TAGRENDERER, "Reading file is successfully");
 }

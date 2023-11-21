@@ -1,7 +1,7 @@
 #include "main.h"
 
-// int kppsTime = 1000000 / (20 * 1000);
-int kppsTime = 50;
+int kppsTime = 1000000 / (20 * 1000); // 20kHz
+
 volatile unsigned long timeOld;
 volatile unsigned long timeStart;
 
@@ -14,14 +14,20 @@ void setup()
 {
   Serial.begin(115200);
 
+  // digitalWrite(5, LOW);
+  // digitalWrite(5, HIGH);
+  // digitalWrite(5, HIGH);
+
+  lcd_init();
+  delay(2000);
+
   setupSD();
 
   // web_init();
 
-  lcd_init();
-
   setupRenderer();
-  button_init();
+
+  // button_init();
 }
 
 void loop()
@@ -31,5 +37,5 @@ void loop()
     timeOld = micros();
     draw_task();
   }
-  button_loop();
+  // button_loop();
 }

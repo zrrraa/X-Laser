@@ -35,9 +35,14 @@ static lv_color_t buf1[screenWidth * screenHeight / 13];
 void my_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p);
 void my_touchpad_read(lv_indev_drv_t *indev_driver, lv_indev_data_t *data);
 
+static const char *TAGLCD = "LCD";
+TaskHandle_t myTFTLCDHandle;
+
 void lcd_init()
 {
   lcd.begin();
+  //ESP_LOGI(TAGLCD, "LCD begin");
+
   lcd.setRotation(3);
   lcd.fillScreen(TFT_BLACK);
   lcd.setTouch(calData);
@@ -86,14 +91,14 @@ void lcd_init()
 
   xTaskCreatePinnedToCore(
       myTFTLCDLoop, /* Task function. */
-      "TFTLCD",     /* name of task. */
+      "myTFTLCDHandle",     /* name of task. */
       4096,         /* Stack size of task */
       NULL,         /* parameter of the task */
-      3,            /* priority of the task */
-      NULL,         /* Task handle to keep track of created task */
+      1,            /* priority of the task */
+      &myTFTLCDHandle,         /* Task handle to keep track of created task */
       1);           /* pin task to core 1 */
 
-  Serial.println("TFTLCD Setup done");
+  ESP_LOGI(TAGLCD, "LCD Setup");
 }
 
 void lcd_loop()

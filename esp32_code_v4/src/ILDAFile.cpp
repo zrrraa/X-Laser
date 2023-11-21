@@ -105,7 +105,9 @@ bool ILDAFile::tickNextFrame()
     return true;
   }
   else
+  //全部都缓存了
   {
-    return false; // 该帧已缓存但是未投影，可能是读文件、串流太快了？忽视掉就好
+    
+    return false;
   }
 }

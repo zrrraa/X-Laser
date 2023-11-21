@@ -9,4 +9,6 @@
 void lcd_init();
 void lcd_loop();
 
+extern TaskHandle_t myTFTLCDHandle;
+
 #endif /* H_MYTFTLCD_H */

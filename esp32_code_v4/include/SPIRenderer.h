@@ -36,6 +36,7 @@ public:
 
 extern const int bufferFrames;
 extern JsonArray avaliableMedia;
+extern bool TFTLCD_status;
 
 void setupRenderer();
 void draw_task();
