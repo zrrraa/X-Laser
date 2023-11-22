@@ -41,8 +41,6 @@ TaskHandle_t myTFTLCDHandle;
 void lcd_init()
 {
   lcd.begin();
-  //ESP_LOGI(TAGLCD, "LCD begin");
-
   lcd.setRotation(3);
   lcd.fillScreen(TFT_BLACK);
   lcd.setTouch(calData);
@@ -89,21 +87,30 @@ void lcd_init()
   delay(1000);
 #endif
 
+  // 创建TFTLCD任务，用于处理LCD刷新和触摸，这个任务层级最低，在最开始就创建，且创建完成后马上进入阻塞状态
   xTaskCreatePinnedToCore(
-      myTFTLCDLoop, /* Task function. */
-      "myTFTLCDHandle",     /* name of task. */
-      4096,         /* Stack size of task */
-      NULL,         /* parameter of the task */
-      1,            /* priority of the task */
-      &myTFTLCDHandle,         /* Task handle to keep track of created task */
-      1);           /* pin task to core 1 */
+      myTFTLCDLoop,     /* Task function. */
+      "myTFTLCDHandle", /* name of task. */
+      4096,             /* Stack size of task */
+      NULL,             /* parameter of the task */
+      3,                /* priority of the task */
+      &myTFTLCDHandle,  /* Task handle to keep track of created task */
+      0);               /* pin task to core 0 */
 
-  ESP_LOGI(TAGLCD, "LCD Setup");
+  ESP_LOGI(TAGLCD, "myTFTLCDLoop Setup");
+  xTaskNotifyGive(myTFTLCDHandle);
+  delay(2000);
 }
 
 void lcd_loop()
 {
 #if defined USE_UI
+
+  // int lv_timer = 0;
+  // lv_timer = lv_timer_handler();
+  // Serial.printf("wait %d for lv_timer_handler\r\n", lv_timer);
+  // delay(lv_timer);
+
   lv_timer_handler();
   delay(5);
 #else

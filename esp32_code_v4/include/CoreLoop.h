@@ -8,11 +8,10 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
-
-
 void fileBufferLoop(void *pvParameters);
 void myTFTLCDLoop(void *pvParameters);
+void drawTaskLoop(void *pvParameters);
 
-extern int buttonState;
+extern int TFTLCD_BUTTON;
 
 #endif /* H_CORELOOP_H */

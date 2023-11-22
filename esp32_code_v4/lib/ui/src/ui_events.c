@@ -6,30 +6,30 @@
 #include "ui.h"
 #include "Arduino.h"
 
-int buttonState = 0;
+int TFTLCD_BUTTON = 0; // 因为库中不能调用自己写的函数，只能用一个变量将信息传递出去
 
 void draw_sdcardfile_1(lv_event_t *e)
 {
 	// Your code here
-	//digitalWrite(26, HIGH);
-	buttonState = 1;
-	//Serial.println("buttonL clicked");
+	// digitalWrite(26, HIGH);
+	TFTLCD_BUTTON = 1;
 }
 
 void draw_sdcardfile_2(lv_event_t *e)
 {
 	// Your code here
-	//digitalWrite(26, LOW);
-	buttonState = 2;
-	//Serial.println("buttonR clicked");
+	// digitalWrite(26, LOW);
+	TFTLCD_BUTTON = 2;
 }
 
 void draw_sdcardfile_3(lv_event_t *e)
 {
 	// Your code here
+	TFTLCD_BUTTON = 3;
 }
 
 void draw_sdcardfile_4(lv_event_t *e)
 {
 	// Your code here
+	TFTLCD_BUTTON = 4;
 }

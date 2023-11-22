@@ -8,9 +8,10 @@ DynamicJsonDocument doc(4096);
 JsonArray avaliableMedia = doc.to<JsonArray>();
 int curMedia = -1;
 
-bool TFTLCD_status = false;
+volatile bool TFTLCD_status = false; // TFTLCD屏幕和SD卡不能同时运行，status作为信号量来传递状态
 
 TaskHandle_t fileBufferHandle;
+TaskHandle_t drawTaskHandle;
 
 void setupRenderer()
 {
@@ -149,7 +150,7 @@ void IRAM_ATTR SPIRenderer::draw()
     else
     // 这一帧画完了
     {
-      ESP_LOGI(TAGRENDERER, "A buffered frame has been rendered");
+      // ESP_LOGI(TAGRENDERER, "A buffered frame has been rendered");
 
       ilda->frames[frame_position].isBuffered = false; // 清除这一帧的buffer标志位，表示这一帧缓存的内容已经投影出去了，可以缓存新的内容了
       draw_position = 0;
@@ -165,7 +166,7 @@ void IRAM_ATTR SPIRenderer::draw()
       if (!isStreaming)
       {
         // fileBufferLoop工作时TFTLCD要进入阻塞状态，防止SD卡和TFTLCD屏幕在一路SPI上同时工作
-        // TFTLCD_status = false;
+        TFTLCD_status = false;
 
         // 唤醒filebufferloop，已经消耗了一个buffer，可以进行一次缓存了
         ESP_LOGI(TAGRENDERER, "A buffered frame has been rendered, fileBufferLoop is notified");
@@ -209,19 +210,30 @@ void SPIRenderer::start()
   ret = spi_bus_add_device(HSPI_HOST, &devcfg, &spi);
   ESP_LOGI(TAGRENDERER, "HSPI_HOST add device, Ret code is %d", ret);
 
-  // 实现任务的函数名称（task1）；任务的任何名称（“ task1”等）；分配给任务的堆栈大小，以字为单位；任务输入参数（可以为NULL）；任务的优先级（0是最低优先级）；任务句柄（可以为NULL）；任务将运行的内核ID（0或1）
   xTaskCreatePinnedToCore(
-      fileBufferLoop,
-      "fileBufferHandle",
-      4096,
-      NULL,
-      5,
-      &fileBufferHandle,
-      0);
-  xTaskNotifyGive(fileBufferHandle);//这个很重要，为了先开始缓存上了好多重保险
+      fileBufferLoop,     /* Task function. */
+      "fileBufferHandle", /* name of task. */
+      4096,               /* Stack size of task */
+      NULL,               /* parameter of the task */
+      3,                  /* priority of the task */
+      &fileBufferHandle,  /* Task handle to keep track of created task */
+      0);                 /* pin task to core 0 */
+  ESP_LOGI(TAGRENDERER, "fileBufferLoop Setup");
+  xTaskNotifyGive(fileBufferHandle); // 这个很重要，为了先开始缓存上了好多重保险
   delay(2000);
 
-  // ESP_LOGI(TAGRENDERER, "FileBufferLoop task create on Core 0");
+  // 如果把draw任务创建在核1上，创建之后的代码全不执行了，就三个任务不停地在开启和抢断
+  xTaskCreatePinnedToCore(
+      drawTaskLoop,     /* Task function. */
+      "drawTaskHandle", /* name of task. */
+      4096,             /* Stack size of task */
+      NULL,             /* parameter of the task */
+      3,                /* priority of the task */
+      &drawTaskHandle,  /* Task handle to keep track of created task */
+      0);               /* pin task to core 0 */
+  ESP_LOGI(TAGRENDERER, "drawTaskLoop Setup");
+  xTaskNotifyGive(drawTaskHandle);
+  delay(2000);
 }
 
 // 读取SD卡中的某个ILDA文件
@@ -239,6 +251,6 @@ void nextMedia(int position)
   }
   String filePath = String("/ILDA/") += avaliableMedia[curMedia].as<String>();
   ilda->cur_frame = 0;
-  ilda->read(SD, filePath.c_str());
-  ESP_LOGI(TAGRENDERER, "Reading file is successfully");
+  ilda->read(SD, filePath.c_str()); // 打印出header说明已经播放完一次完整的动画了
+  // ESP_LOGI(TAGRENDERER, "Reading file is successfully");
 }

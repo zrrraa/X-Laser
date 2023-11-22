@@ -2,8 +2,7 @@
 
 Button2 buttonL, buttonR;
 
-// 启用了屏幕，在ui_events.c中对buttonState进行了定义
-// int buttonState = 0; // 让Core0 和 Core1的操作不要同时出现，不然就读着读着跳下一个文件就Crash了    无操作 -1   上一个 1  下一个 2  自动下一个 3  不要自动 4
+int buttonState = 0; // 让Core0 和 Core1的操作不要同时出现，不然就读着读着跳下一个文件就Crash了    无操作 -1   上一个 1  下一个 2  自动下一个 3  不要自动 4
 
 void button_init()
 {

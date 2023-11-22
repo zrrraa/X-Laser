@@ -34,9 +34,11 @@ public:
     void start();
 };
 
+extern int curMedia;
 extern const int bufferFrames;
 extern JsonArray avaliableMedia;
-extern bool TFTLCD_status;
+extern volatile bool TFTLCD_status;
+extern TaskHandle_t drawTaskHandle;
 
 void setupRenderer();
 void draw_task();

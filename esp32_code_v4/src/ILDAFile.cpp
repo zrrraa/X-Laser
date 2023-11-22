@@ -105,9 +105,8 @@ bool ILDAFile::tickNextFrame()
     return true;
   }
   else
-  //全部都缓存了
+  // 全部都缓存了
   {
-    
     return false;
   }
 }
