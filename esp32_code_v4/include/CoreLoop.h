@@ -10,8 +10,9 @@
 
 void fileBufferLoop(void *pvParameters);
 void myTFTLCDLoop(void *pvParameters);
-void drawTaskLoop(void *pvParameters);
+// void drawTaskLoop(void *pvParameters);
 
 extern int TFTLCD_BUTTON;
+
 
 #endif /* H_CORELOOP_H */

@@ -46,8 +46,14 @@ void setupRenderer()
   Serial.print("RAM After:");
   Serial.println(ESP.getFreeHeap());
 
+  while (LaserBegin == 0) // 等待第一次按钮按下
+    Serial.println(LaserBegin);
+  // nextMedia(1);
+  nextMedia(TFTLCD_BUTTON);
+  TFTLCD_BUTTON = 0;
+
+  ESP_LOGI(TAGRENDERER, "Renderer begin to setup");
   // 开始准备播放
-  nextMedia(1);
   renderer = new SPIRenderer();
   renderer->start();
 }
@@ -222,18 +228,18 @@ void SPIRenderer::start()
   xTaskNotifyGive(fileBufferHandle); // 这个很重要，为了先开始缓存上了好多重保险
   delay(2000);
 
-  // 如果把draw任务创建在核1上，创建之后的代码全不执行了，就三个任务不停地在开启和抢断
-  xTaskCreatePinnedToCore(
-      drawTaskLoop,     /* Task function. */
-      "drawTaskHandle", /* name of task. */
-      4096,             /* Stack size of task */
-      NULL,             /* parameter of the task */
-      3,                /* priority of the task */
-      &drawTaskHandle,  /* Task handle to keep track of created task */
-      0);               /* pin task to core 0 */
-  ESP_LOGI(TAGRENDERER, "drawTaskLoop Setup");
-  xTaskNotifyGive(drawTaskHandle);
-  delay(2000);
+  // // 如果把draw任务创建在核1上，创建之后的代码全不执行了，就三个任务不停地在开启和抢断
+  // xTaskCreatePinnedToCore(
+  //     drawTaskLoop,     /* Task function. */
+  //     "drawTaskHandle", /* name of task. */
+  //     4096,             /* Stack size of task */
+  //     NULL,             /* parameter of the task */
+  //     3,                /* priority of the task */
+  //     &drawTaskHandle,  /* Task handle to keep track of created task */
+  //     0);               /* pin task to core 0 */
+  // ESP_LOGI(TAGRENDERER, "drawTaskLoop Setup");
+  // xTaskNotifyGive(drawTaskHandle);
+  // delay(2000);
 }
 
 // 读取SD卡中的某个ILDA文件

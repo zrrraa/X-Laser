@@ -7,12 +7,14 @@
 #include "Arduino.h"
 
 int TFTLCD_BUTTON = 0; // 因为库中不能调用自己写的函数，只能用一个变量将信息传递出去
+int LaserBegin = 0; //第一个按钮按下，开始工作
 
 void draw_sdcardfile_1(lv_event_t *e)
 {
 	// Your code here
 	// digitalWrite(26, HIGH);
 	TFTLCD_BUTTON = 1;
+	LaserBegin = 1;
 }
 
 void draw_sdcardfile_2(lv_event_t *e)
@@ -20,16 +22,19 @@ void draw_sdcardfile_2(lv_event_t *e)
 	// Your code here
 	// digitalWrite(26, LOW);
 	TFTLCD_BUTTON = 2;
+	LaserBegin = 1;
 }
 
 void draw_sdcardfile_3(lv_event_t *e)
 {
 	// Your code here
 	TFTLCD_BUTTON = 3;
+	LaserBegin = 1;
 }
 
 void draw_sdcardfile_4(lv_event_t *e)
 {
 	// Your code here
 	TFTLCD_BUTTON = 4;
+	LaserBegin = 1;
 }

@@ -39,6 +39,7 @@ extern const int bufferFrames;
 extern JsonArray avaliableMedia;
 extern volatile bool TFTLCD_status;
 extern TaskHandle_t drawTaskHandle;
+extern int LaserBegin;
 
 void setupRenderer();
 void draw_task();
