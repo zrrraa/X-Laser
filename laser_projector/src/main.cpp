@@ -2,7 +2,8 @@
 #include <WiFi.h>
 #include <vector>
 #include "FS.h"
-#include "SD.h"
+// #include "SD.h"
+#include "SD_MMC.h"
 #include "SPI.h"
 #include <ArduinoJson.h>
 #include "Button2.h"
@@ -138,8 +139,8 @@ void loop()
     timeOld = micros();
     draw_task();
   }
-  buttonL.loop();
-  buttonR.loop();
+  // buttonL.loop();
+  // buttonR.loop();
 }
 
 void click(Button2 &btn)
@@ -167,22 +168,72 @@ JsonArray avaliableMedia = doc.to<JsonArray>();
 int curMedia = -1;
 
 // SD ==================================================
+// void setupSD()
+// {
+//   if (!SD.begin())
+//   {
+//     Serial.println("Card Mount Failed");
+//     return;
+//   }
+//   uint8_t cardType = SD.cardType();
+
+//   if (cardType == CARD_NONE)
+//   {
+//     Serial.println("No SD card attached");
+//     return;
+//   }
+
+//   Serial.print("SD Card Type: ");
+//   if (cardType == CARD_MMC)
+//   {
+//     Serial.println("MMC");
+//   }
+//   else if (cardType == CARD_SD)
+//   {
+//     Serial.println("SDSC");
+//   }
+//   else if (cardType == CARD_SDHC)
+//   {
+//     Serial.println("SDHC");
+//   }
+//   else
+//   {
+//     Serial.println("UNKNOWN");
+//   }
+
+//   uint64_t cardSize = SD.cardSize() / (1024 * 1024);
+//   Serial.printf("SD Card Size: %lluMB\n", cardSize);
+
+//   root = SD.open("/ILDA");
+//   while (true)
+//   {
+//     File entry = root.openNextFile();
+//     if (!entry)
+//       break;
+//     if (!entry.isDirectory() && String(entry.name()).indexOf(".ild") != -1)
+//     {
+//       Serial.println(entry.name());
+//       avaliableMedia.add(String(entry.name()));
+//     }
+//   }
+// }
+
 void setupSD()
 {
-  if (!SD.begin())
+  if (! SD_MMC.begin("/sdcard", true))
   {
     Serial.println("Card Mount Failed");
     return;
   }
-  uint8_t cardType = SD.cardType();
+  uint8_t cardType = SD_MMC.cardType();
 
   if (cardType == CARD_NONE)
   {
-    Serial.println("No SD card attached");
+    Serial.println("No SD_MMC card attached");
     return;
   }
 
-  Serial.print("SD Card Type: ");
+  Serial.print("SD_MMC Card Type: ");
   if (cardType == CARD_MMC)
   {
     Serial.println("MMC");
@@ -200,15 +251,17 @@ void setupSD()
     Serial.println("UNKNOWN");
   }
 
-  uint64_t cardSize = SD.cardSize() / (1024 * 1024);
-  Serial.printf("SD Card Size: %lluMB\n", cardSize);
+  uint64_t cardSize = SD_MMC.cardSize() / (1024 * 1024);
+  Serial.printf("SD_MMC Card Size: %lluMB\r\n", cardSize);
 
-  root = SD.open("/ILDA");
+  root = SD_MMC.open("/ILDA");
   while (true)
   {
     File entry = root.openNextFile();
     if (!entry)
+    {
       break;
+    }
     if (!entry.isDirectory() && String(entry.name()).indexOf(".ild") != -1)
     {
       Serial.println(entry.name());
@@ -701,7 +754,7 @@ void nextMedia(int position)
     curMedia = avaliableMedia.size() - 1;
   String filePath = String("/ILDA/") += avaliableMedia[curMedia].as<String>();
   ilda->cur_frame = 0;
-  ilda->read(SD, filePath.c_str());
+  ilda->read(SD_MMC, filePath.c_str());
 }
 
 // Core ===============================================

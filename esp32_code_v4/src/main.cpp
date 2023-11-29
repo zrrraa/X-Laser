@@ -17,10 +17,10 @@ void setup()
 
   setupRenderer();
 
-  button_init();
+  //button_init();
 }
 
 void loop()
 {
-  button_loop();
+  //button_loop();
 }

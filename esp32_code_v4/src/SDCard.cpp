@@ -4,20 +4,20 @@ File root;
 
 void setupSD()
 {
-  if (!SD.begin())
+  if (! SD_MMC.begin("/sdcard", true))
   {
     Serial.println("Card Mount Failed");
     return;
   }
-  uint8_t cardType = SD.cardType();
+  uint8_t cardType = SD_MMC.cardType();
 
   if (cardType == CARD_NONE)
   {
-    Serial.println("No SD card attached");
+    Serial.println("No SD_MMC card attached");
     return;
   }
 
-  Serial.print("SD Card Type: ");
+  Serial.print("SD_MMC Card Type: ");
   if (cardType == CARD_MMC)
   {
     Serial.println("MMC");
@@ -35,10 +35,10 @@ void setupSD()
     Serial.println("UNKNOWN");
   }
 
-  uint64_t cardSize = SD.cardSize() / (1024 * 1024);
-  Serial.printf("SD Card Size: %lluMB\r\n", cardSize);
+  uint64_t cardSize = SD_MMC.cardSize() / (1024 * 1024);
+  Serial.printf("SD_MMC Card Size: %lluMB\r\n", cardSize);
 
-  root = SD.open("/ILDA");
+  root = SD_MMC.open("/ILDA");
   while (true)
   {
     File entry = root.openNextFile();

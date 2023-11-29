@@ -38,7 +38,7 @@ void setupRenderer()
       while (1)
         ;
     }
-    Serial.printf("ilda->frames[%d].isBuffered=", i);
+    Serial.printf("ilda->frames[%d].isBuffered = ", i);
     Serial.println(ilda->frames[i].isBuffered);
   }
 
@@ -166,10 +166,10 @@ void IRAM_ATTR SPIRenderer::draw()
       if (!isStreaming)
       {
         // fileBufferLoop工作时TFTLCD要进入阻塞状态，防止SD卡和TFTLCD屏幕在一路SPI上同时工作
-        TFTLCD_status = false;
+        // TFTLCD_status = false;
 
         // 唤醒filebufferloop，已经消耗了一个buffer，可以进行一次缓存了
-        ESP_LOGI(TAGRENDERER, "A buffered frame has been rendered, fileBufferLoop is notified");
+        // ESP_LOGI(TAGRENDERER, "A buffered frame has been rendered, fileBufferLoop is notified");
         xTaskNotifyGive(fileBufferHandle);
       }
     }
@@ -251,6 +251,6 @@ void nextMedia(int position)
   }
   String filePath = String("/ILDA/") += avaliableMedia[curMedia].as<String>();
   ilda->cur_frame = 0;
-  ilda->read(SD, filePath.c_str()); // 打印出header说明已经播放完一次完整的动画了
+  ilda->read(SD_MMC, filePath.c_str()); // 打印出header说明已经播放完一次完整的动画了
   // ESP_LOGI(TAGRENDERER, "Reading file is successfully");
 }

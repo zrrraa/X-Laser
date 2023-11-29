@@ -62,16 +62,16 @@ void fileBufferLoop(void *pvParameters)
       if (!(ilda->tickNextFrame()))
       {
         // fileBufferLoop阻塞时可以开始运行TFTLCDLoop
-        TFTLCD_status = true;
-        ESP_LOGI(TAGCORE, "myTFTLCDLoop begin on core %d", xPortGetCoreID());
-        xTaskNotifyGive(myTFTLCDHandle);
+        // TFTLCD_status = true;
+        // ESP_LOGI(TAGCORE, "myTFTLCDLoop begin on core %d", xPortGetCoreID());
+        // xTaskNotifyGive(myTFTLCDHandle);
 
-        ESP_LOGI(TAGCORE, "fileBufferLoop SLEEP on core %d", xPortGetCoreID());
+        // ESP_LOGI(TAGCORE, "fileBufferLoop SLEEP on core %d", xPortGetCoreID());
         xTaskNotifyWait(0, 0, NULL, portMAX_DELAY);
       }
       else // 缓存成功了一帧
       {
-        ESP_LOGI(TAGCORE, "A frame has been buffered");
+        // ESP_LOGI(TAGCORE, "A frame has been buffered");
       }
     }
   }
@@ -90,16 +90,16 @@ void myTFTLCDLoop(void *pvParameters)
       TIMERG0.wdt_feed = 1;
       TIMERG0.wdt_wprotect = 0;
     }
-    if (TFTLCD_status == false) // 如果有已缓存且未投影的帧，fileBufferLoop要开始执行，TFTLCD必须阻塞状态等待
-    {
-      ESP_LOGI(TAGCORE, "myTFTLCDLoop SLEEP");
-      xTaskNotifyWait(0, 0, NULL, portMAX_DELAY);
-    }
-    else
-    {
-      ESP_LOGI(TAGCORE, "myTFTLCDLoop WORKING");
+    // if (TFTLCD_status == false) // 如果有已缓存且未投影的帧，fileBufferLoop要开始执行，TFTLCD必须阻塞状态等待
+    // {
+    //   ESP_LOGI(TAGCORE, "myTFTLCDLoop SLEEP");
+    //   xTaskNotifyWait(0, 0, NULL, portMAX_DELAY);
+    // }
+    // else
+    // {
+      // ESP_LOGI(TAGCORE, "myTFTLCDLoop WORKING");
       lcd_loop();
-    }
+    // }
   }
 }
 
