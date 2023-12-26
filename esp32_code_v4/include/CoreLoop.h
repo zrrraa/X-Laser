@@ -13,6 +13,6 @@ void myTFTLCDLoop(void *pvParameters);
 // void drawTaskLoop(void *pvParameters);
 
 extern int TFTLCD_BUTTON;
-
+extern bool AutoPlay_Flag;
 
 #endif /* H_CORELOOP_H */

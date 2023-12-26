@@ -1,6 +1,6 @@
 #include "SPIRenderer.h"
 
-const int bufferFrames = 3;
+const int bufferFrames = 8;
 static const char *TAGRENDERER = "SPI";
 
 SPIRenderer *renderer;
@@ -46,11 +46,19 @@ void setupRenderer()
   Serial.print("RAM After:");
   Serial.println(ESP.getFreeHeap());
 
-  while (LaserBegin == 0) // 等待第一次按钮按下
-    Serial.println(LaserBegin);
+  // TFTLCD_BUTTON = 1;
+  // LaserBegin = 1;
+
+  while (LaserBegin == 0)
+  {
+    Serial.println("Waiting..."); // 等待第一次按钮按下
+    delay(1500);
+  }
+
+
   // nextMedia(1);
-  nextMedia(TFTLCD_BUTTON);
-  TFTLCD_BUTTON = 0;
+  // nextMedia(TFTLCD_BUTTON);
+  // TFTLCD_BUTTON = 0;
 
   ESP_LOGI(TAGRENDERER, "Renderer begin to setup");
   // 开始准备播放
@@ -108,43 +116,43 @@ void IRAM_ATTR SPIRenderer::draw()
       {
         if (instruction.color <= 9)
         { // RED
-          digitalWrite(PIN_NUM_LASER_R, LOW);
+          digitalWrite(PIN_NUM_LASER_R, HIGH);
         }
         else if (instruction.color <= 18)
         { // YELLOW
-          digitalWrite(PIN_NUM_LASER_R, LOW);
-          digitalWrite(PIN_NUM_LASER_G, LOW);
+          digitalWrite(PIN_NUM_LASER_R, HIGH);
+          digitalWrite(PIN_NUM_LASER_G, HIGH);
         }
         else if (instruction.color <= 27)
         { // GREEN
-          digitalWrite(PIN_NUM_LASER_G, LOW);
+          digitalWrite(PIN_NUM_LASER_G, HIGH);
         }
         else if (instruction.color <= 36)
         { // CYAN
-          digitalWrite(PIN_NUM_LASER_G, LOW);
-          digitalWrite(PIN_NUM_LASER_B, LOW);
+          digitalWrite(PIN_NUM_LASER_G, HIGH);
+          digitalWrite(PIN_NUM_LASER_B, HIGH);
         }
         else if (instruction.color <= 45)
         { // BLUE
-          digitalWrite(PIN_NUM_LASER_B, LOW);
+          digitalWrite(PIN_NUM_LASER_B, HIGH);
         }
         else if (instruction.color <= 54)
         { // Magenta
-          digitalWrite(PIN_NUM_LASER_B, LOW);
-          digitalWrite(PIN_NUM_LASER_R, LOW);
+          digitalWrite(PIN_NUM_LASER_B, HIGH);
+          digitalWrite(PIN_NUM_LASER_R, HIGH);
         }
         else if (instruction.color <= 63)
         { // WHITE
-          digitalWrite(PIN_NUM_LASER_B, LOW);
-          digitalWrite(PIN_NUM_LASER_R, LOW);
-          digitalWrite(PIN_NUM_LASER_G, LOW);
+          digitalWrite(PIN_NUM_LASER_B, HIGH);
+          digitalWrite(PIN_NUM_LASER_R, HIGH);
+          digitalWrite(PIN_NUM_LASER_G, HIGH);
         }
       }
       else
       { // 不亮的Point
-        digitalWrite(PIN_NUM_LASER_R, HIGH);
-        digitalWrite(PIN_NUM_LASER_G, HIGH);
-        digitalWrite(PIN_NUM_LASER_B, HIGH);
+        digitalWrite(PIN_NUM_LASER_R, LOW);
+        digitalWrite(PIN_NUM_LASER_G, LOW);
+        digitalWrite(PIN_NUM_LASER_B, LOW);
       }
       // DAC输出刷新
       digitalWrite(PIN_NUM_LDAC, LOW);

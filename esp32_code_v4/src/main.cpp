@@ -1,6 +1,6 @@
 #include "main.h"
 
-int kppsTime = 1000000 / (20 * 1000); // 实际会慢于20kHz
+int kppsTime = 1000000 / (40 * 1000); // 实际会慢于40kHz
 volatile unsigned long timeOld;
 volatile unsigned long timeStart;
 
@@ -12,6 +12,8 @@ static const char *TAGMAIN = "MAIN";
 void setup()
 {
   Serial.begin(115200);
+
+  // WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0); //关闭断电检测
 
   lcd_init();
 

@@ -6,6 +6,8 @@ unsigned long timeDog = 0;
 unsigned long timeDog2 = 0;
 unsigned long timeDog3 = 0;
 
+bool AutoPlay_Flag = 0;
+char selected_text[32]; // Roller选中的文本缓冲区
 
 // unsigned long LCD_freshPrevious = 0;
 // unsigned long LCD_freshInterval = 1000 / 1000; // 1000Hz刷新LCD屏
@@ -44,28 +46,80 @@ void fileBufferLoop(void *pvParameters)
       // TFTLCD按钮判断
       if (TFTLCD_BUTTON == 1)
       {
-        nextMedia(0 - curMedia);
+        AutoPlay_Flag = 0;
+        lv_roller_get_selected_str(ui_Roller1, selected_text, sizeof(selected_text));
+
+        // 判断Roller选中项
+        if (strcmp(selected_text, "ILDA1") == 0)
+        {
+          Serial.println("ILDA1 begin!");
+          nextMedia(0 - curMedia);
+        }
+        else if (strcmp(selected_text, "ILDA2") == 0)
+        {
+          Serial.println("ILDA2 begin!");
+          nextMedia(1 - curMedia);
+        }
+        else if (strcmp(selected_text, "ILDA3") == 0)
+        {
+          Serial.println("ILDA3 begin!");
+          nextMedia(2 - curMedia);
+        }
+        else if (strcmp(selected_text, "ILDA4") == 0)
+        {
+          Serial.println("ILDA4 begin!");
+          nextMedia(3 - curMedia);
+        }
+        else if (strcmp(selected_text, "ILDA5") == 0)
+        {
+          Serial.println("ILDA5 begin!");
+          nextMedia(4 - curMedia);
+        }
+        else if (strcmp(selected_text, "ILDA6") == 0)
+        {
+          Serial.println("ILDA6 begin!");
+          nextMedia(5 - curMedia);
+        }
+        else if (strcmp(selected_text, "ILDA7") == 0)
+        {
+          Serial.println("ILDA7 begin!");
+          nextMedia(6 - curMedia);
+        }
+        else if (strcmp(selected_text, "ILDA8") == 0)
+        {
+          Serial.println("ILDA8 begin!");
+          nextMedia(7 - curMedia);
+        }
+        else if (strcmp(selected_text, "ILDA9") == 0)
+        {
+          Serial.println("ILDA9 begin!");
+          nextMedia(8 - curMedia);
+        }
+        else if (strcmp(selected_text, "ILDA10") == 0)
+        {
+          Serial.println("ILDA10 begin!");
+          nextMedia(9 - curMedia);
+        }
         TFTLCD_BUTTON = 0;
-        
       }
       else if (TFTLCD_BUTTON == 2)
       {
-        nextMedia(1 - curMedia);
+        AutoPlay_Flag = 1;
+        nextMedia(1);
         TFTLCD_BUTTON = 0;
-        
       }
-      else if (TFTLCD_BUTTON == 3)
-      {
-        nextMedia(2 - curMedia);
-        TFTLCD_BUTTON = 0;
-        
-      }
-      else if (TFTLCD_BUTTON == 4)
-      {
-        nextMedia(3 - curMedia);
-        TFTLCD_BUTTON = 0;
-        
-      }
+      // else if (TFTLCD_BUTTON == 3)
+      // {
+      //   nextMedia(2 - curMedia);
+      //   TFTLCD_BUTTON = 0;
+
+      // }
+      // else if (TFTLCD_BUTTON == 4)
+      // {
+      //   nextMedia(3 - curMedia);
+      //   TFTLCD_BUTTON = 0;
+
+      // }
 
       // 缓存下一帧。如果缓存不成功，说明三帧都已经缓存了，则将fileBufferLoop置于阻塞状态
       if (!(ilda->tickNextFrame()))

@@ -5,6 +5,8 @@
 #include <cstring>
 #include <stdint.h>
 #include <Arduino.h>
+#include "soc/soc.h"
+#include "soc/rtc_cntl_reg.h"
 
 #include "button.h"
 #include "SDCard.h"

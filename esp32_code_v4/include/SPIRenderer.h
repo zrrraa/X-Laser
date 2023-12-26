@@ -13,9 +13,9 @@
 #define PIN_NUM_CLK 26
 #define PIN_NUM_CS 27
 #define PIN_NUM_LDAC 33
-#define PIN_NUM_LASER_R 13
-#define PIN_NUM_LASER_G 16
-#define PIN_NUM_LASER_B 17
+#define PIN_NUM_LASER_R 4
+#define PIN_NUM_LASER_G 32
+#define PIN_NUM_LASER_B 13
 
 #define MAXRECORDS 3000
 

@@ -94,13 +94,13 @@ bool ILDAFile::tickNextFrame()
     if (cur_frame > file_frames - 1)
     {
       cur_frame = 0;
-      // 此处可以添加自动播放
-      // if (digitalRead(4) == HIGH)
-      // {
-      //   nextMedia(1);
-      // }
-      // else
-      nextMedia(0);
+      // 自动播放
+      if (AutoPlay_Flag == 1)
+      {
+        nextMedia(1);
+      }
+      else
+        nextMedia(0);
     }
     return true;
   }

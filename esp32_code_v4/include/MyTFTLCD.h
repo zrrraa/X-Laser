@@ -5,6 +5,8 @@
 
 #include "TFT_eSPI.h"
 #include <SPI.h>
+#include <lvgl.h>
+#include "ui.h"
 
 void lcd_init();
 void lcd_loop();
