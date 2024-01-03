@@ -14,3 +14,8 @@ void GO_AutoPlay(lv_event_t * e)
 {
 	// Your code here
 }
+
+void sc3tosc2(lv_event_t * e)
+{
+	// Your code here
+}

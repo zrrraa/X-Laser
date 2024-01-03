@@ -114,6 +114,7 @@ void ui_event_Button7( lv_event_t * e) {
 if ( event_code == LV_EVENT_RELEASED) {
       _ui_screen_change( &ui_Screen2, LV_SCR_LOAD_ANIM_FADE_ON, 100, 0, &ui_Screen2_screen_init);
       _ui_screen_delete( &ui_Screen3);
+      sc3tosc2( e );
 }
 }
 void ui_event_Button8( lv_event_t * e) {

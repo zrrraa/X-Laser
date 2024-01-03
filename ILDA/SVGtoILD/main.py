@@ -1070,7 +1070,7 @@ def write_ild(params, rframe, path, center=True):
 
 
 if __name__ == "__main__":
-    optimize = True
+    optimize = False
     verbose = True
     center = True
     params = RenderParameters()

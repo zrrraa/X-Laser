@@ -22,3 +22,9 @@ void GO_AutoPlay(lv_event_t *e)
 	TFTLCD_BUTTON = 2;
 	LaserBegin = 1;
 }
+
+void sc3tosc2(lv_event_t * e)
+{
+	// Your code here
+	TFTLCD_BUTTON = 3;
+}

@@ -12,6 +12,7 @@ extern "C" {
 
 void Go_ReFresh(lv_event_t * e);
 void GO_AutoPlay(lv_event_t * e);
+void sc3tosc2(lv_event_t * e);
 
 #ifdef __cplusplus
 } /*extern "C"*/

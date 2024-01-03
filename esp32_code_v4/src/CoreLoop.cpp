@@ -108,12 +108,12 @@ void fileBufferLoop(void *pvParameters)
         nextMedia(1);
         TFTLCD_BUTTON = 0;
       }
-      // else if (TFTLCD_BUTTON == 3)
-      // {
-      //   nextMedia(2 - curMedia);
-      //   TFTLCD_BUTTON = 0;
-
-      // }
+      else if (TFTLCD_BUTTON == 3)
+      {
+        AutoPlay_Flag = 0;
+        TFTLCD_BUTTON = 0;
+        
+      }
       // else if (TFTLCD_BUTTON == 4)
       // {
       //   nextMedia(3 - curMedia);
