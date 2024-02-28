@@ -7,9 +7,6 @@ int kppsTime_draw = 1000000 / (3 * 1000);
 volatile unsigned long timeOld;
 volatile unsigned long timeStart;
 
-// 不用webstream功能时在这里定义
-bool isStreaming = false;
-
 static const char *TAGMAIN = "MAIN";
 
 void setup()

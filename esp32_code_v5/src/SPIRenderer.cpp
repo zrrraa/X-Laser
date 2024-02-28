@@ -181,16 +181,12 @@ void IRAM_ATTR SPIRenderer::draw()
           frame_position = 0;
         }
 
-        // 现阶段无用，isStreaming恒为false
-        if (!isStreaming)
-        {
-          // fileBufferLoop工作时TFTLCD要进入阻塞状态，防止SD卡和TFTLCD屏幕在一路SPI上同时工作
-          // TFTLCD_status = false;
+        // fileBufferLoop工作时TFTLCD要进入阻塞状态，防止SD卡和TFTLCD屏幕在一路SPI上同时工作
+        // TFTLCD_status = false;
 
-          // 唤醒filebufferloop，已经消耗了一个buffer，可以进行一次缓存了
-          ESP_LOGI(TAGRENDERER, "A buffered frame has been rendered, fileBufferLoop is notified");
-          xTaskNotifyGive(fileBufferHandle);
-        }
+        // 唤醒filebufferloop，已经消耗了一个buffer，可以进行一次缓存了
+        ESP_LOGI(TAGRENDERER, "A buffered frame has been rendered, fileBufferLoop is notified");
+        xTaskNotifyGive(fileBufferHandle);
       }
     }
   }

@@ -34,33 +34,31 @@ void fileBufferLoop(void *pvParameters)
       TIMERG0.wdt_feed = 1;
       TIMERG0.wdt_wprotect = 0;
     }
-    if (!isStreaming)
+
+    // 本来按键判断在此处
+
+    // 一切停止投影的状态
+    // ESP_LOGI(TAGCORE, "Pause_Flag = %d", Pause_Flag);
+    if (Pause_Flag == 1)
     {
-      // 本来按键判断在此处
+      ESP_LOGI(TAGCORE, "fileBufferLoop STOP");
+      xTaskNotifyWait(0, 0, NULL, portMAX_DELAY);
+    }
 
-      // 一切停止投影的状态
-      // ESP_LOGI(TAGCORE, "Pause_Flag = %d", Pause_Flag);
-      if (Pause_Flag == 1)
-      {
-        ESP_LOGI(TAGCORE, "fileBufferLoop STOP");
-        xTaskNotifyWait(0, 0, NULL, portMAX_DELAY);
-      }
+    // 缓存下一帧。如果缓存不成功，说明三帧都已经缓存了，则将fileBufferLoop置于阻塞状态
+    if (!(ilda->tickNextFrame()))
+    {
+      // fileBufferLoop阻塞时可以开始运行TFTLCDLoop
+      // TFTLCD_status = true;
+      // ESP_LOGI(TAGCORE, "myTFTLCDLoop begin on core %d", xPortGetCoreID());
+      // xTaskNotifyGive(myTFTLCDHandle);
 
-      // 缓存下一帧。如果缓存不成功，说明三帧都已经缓存了，则将fileBufferLoop置于阻塞状态
-      if (!(ilda->tickNextFrame()))
-      {
-        // fileBufferLoop阻塞时可以开始运行TFTLCDLoop
-        // TFTLCD_status = true;
-        // ESP_LOGI(TAGCORE, "myTFTLCDLoop begin on core %d", xPortGetCoreID());
-        // xTaskNotifyGive(myTFTLCDHandle);
-
-        ESP_LOGI(TAGCORE, "fileBufferLoop SLEEP on core %d", xPortGetCoreID());
-        xTaskNotifyWait(0, 0, NULL, portMAX_DELAY);
-      }
-      else // 缓存成功了一帧
-      {
-        // ESP_LOGI(TAGCORE, "A frame has been buffered");
-      }
+      ESP_LOGI(TAGCORE, "fileBufferLoop SLEEP on core %d", xPortGetCoreID());
+      xTaskNotifyWait(0, 0, NULL, portMAX_DELAY);
+    }
+    else // 缓存成功了一帧
+    {
+      // ESP_LOGI(TAGCORE, "A frame has been buffered");
     }
   }
 }
