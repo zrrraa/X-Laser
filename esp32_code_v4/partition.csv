@@ -1,8 +1,0 @@
-# Name,     Type,   SubType, Offset,    Size,   Flags # 20KB NVS October 4th 2022 by Sdl
-# Added 64K core dump section
-nvs,        data,   nvs,    0x9000,     0x5000
-otadata,    data,   ota,    0xE000,     0x2000
-app0,       app,    ota_0,  0x10000,    0x2A0000
-app1,       app,    ota_1,  0x2B0000,   0x2A0000
-ffat,       data,   fat,    0x550000,   0x2A0000
-coredump,   data,   coredump,,          64K
