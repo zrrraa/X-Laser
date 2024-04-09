@@ -9,9 +9,11 @@
 - MCU固件源码及屏幕UI工程源文件
 - 外壳设计结构工程源文件
 
-github仓库链接[https://github.com/zrrraa/X-Laser/tree/master](https://github.com/zrrraa/X-Laser/tree/master)
+github仓库链接 [https://github.com/zrrraa/X-Laser](https://github.com/zrrraa/X-Laser)
 
-嘉立创工程链接[https://oshwhub.com/small-horn-projection-team/x-laser](https://oshwhub.com/small-horn-projection-team/x-laser)
+嘉立创工程链接 [https://oshwhub.com/small-horn-projection-team/x-laser](https://oshwhub.com/small-horn-projection-team/x-laser)
+
+B站演示视频 [https://www.bilibili.com/video/BV12m411z7Wr/?vd_source=1d0c07486a3bd3b0adb8ac548bf6453e](https://www.bilibili.com/video/BV12m411z7Wr/?vd_source=1d0c07486a3bd3b0adb8ac548bf6453e)
 
 B站展示视频链接等待更新。
 
