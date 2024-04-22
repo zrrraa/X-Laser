@@ -22,7 +22,7 @@ B站演示视频 [https://www.bilibili.com/video/BV12m411z7Wr/?vd_source=1d0c074
 ### 1.1.1 Hardware
 文件夹内是X-Laser的核心电路板原理图和PCB，提供的是立创EDA专业版格式的源文件以及Garber格式的光绘文件。
 
-![系统框图.PNG](./4.Docs/assets/系统框图.png)
+![系统框图.PNG](./4.Docs/assets/系统总框图.png)
 
 一共两块板子：
 - 主控板(Master Control)：X-Laser的核心控制板PCB，主控为esp32，外围电路集成了DAC，MicroSD，TFTLCD的驱动，其中TFTLCD通过杜邦线和主控板相连。振镜电机驱动板和激光驱动板通过XH线与主控板相连。
