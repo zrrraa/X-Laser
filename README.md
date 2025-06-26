@@ -15,7 +15,11 @@ github仓库链接 [https://github.com/zrrraa/X-Laser](https://github.com/zrrraa
 
 嘉立创工程链接 [https://oshwhub.com/small-horn-projection-team/x-laser](https://oshwhub.com/small-horn-projection-team/x-laser)
 
-B站演示视频 [https://www.bilibili.com/video/BV12m411z7Wr/?vd_source=1d0c07486a3bd3b0adb8ac548bf6453e](https://www.bilibili.com/video/BV12m411z7Wr/?vd_source=1d0c07486a3bd3b0adb8ac548bf6453e)
+B站演示视频 
+
+[【X-Laser】矢量激光投影仪！磕磕绊绊四个月终于收工！_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV12m411z7Wr/?spm_id_from=333.1387.favlist.content.click&vd_source=1d0c07486a3bd3b0adb8ac548bf6453e)
+
+[【X-Laser V2】我们对一年前做的激光投影仪进行了全面更新……_哔哩哔哩_bilibili]()
 
 ![整体预览图.JPG](./5.Docs/assets/整体预览图.JPG)
 
@@ -77,13 +81,13 @@ Software中提供了上位机控制软件的源码，以及编译好的上位机
 
 X-Laser的结构设计包括一个只含上下底的框架和四片面板，通过螺栓螺母和螺丝固定。
 
-![总结构设计图.PNG](./5.Docs/assets/总结构设计图.PNG)
+![总结构设计图.png](./5.Docs/assets/总结构设计图.png "总结构设计图")
 
 其中侧面包含了固定激光振镜驱动板的结构，主体框架上包括了固定振镜电机和RGB激光模组的结构。
 
-![三视图.png](./5.Docs/assets/三视图.png)
+![三视图.jpg](./5.Docs/assets/三视图.jpg "三视图")
 
-Logo面包含了电源总开关的固定螺纹以及SD卡的镂空槽，固定激光振镜驱动板的一面采用连续开槽设计，美化观感以及方便散热。主体框架的斜面上设计了固定TFTLCD屏幕的光孔。两块PCB通过铜柱和排针排母上下固定，竖直安装在背面。若有装配支架的需求，可以购买带磁吸环的支架置于底部。
+Logo面包含了电源总开关的固定螺纹、SD卡的镂空槽、拨动开关的安装槽以及串口模块的镂空槽，固定激光振镜驱动板的一面采用连续开槽设计，美化观感以及方便散热。主体框架的斜面上设计了固定TFTLCD屏幕的光孔。两块PCB通过铜柱和排针排母上下固定，竖直安装在背面。若有装配支架的需求，可以购买带磁吸环的支架置于底部。
 
 ## 关于固件源码
 
