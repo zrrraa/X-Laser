@@ -19,7 +19,7 @@ B站演示视频
 
 [【X-Laser】矢量激光投影仪！磕磕绊绊四个月终于收工！_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV12m411z7Wr/?spm_id_from=333.1387.favlist.content.click&vd_source=1d0c07486a3bd3b0adb8ac548bf6453e)
 
-[【X-Laser V2】我们对一年前做的激光投影仪进行了全面更新……_哔哩哔哩_bilibili]()
+[【X-Laser V2】我们对一年前做的激光投影仪进行了全面更新……_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1VbKRzCEdx/?spm_id_from=333.1387.homepage.video_card.click&vd_source=1d0c07486a3bd3b0adb8ac548bf6453e)
 
 ![整体预览图.JPG](./5.Docs/assets/整体预览图.JPG)
 
