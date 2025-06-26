@@ -14,5 +14,10 @@
 #include "ILDAFile.h"
 #include "CoreLoop.h"
 #include "MyTFTLCD.h"
+#include "FilePush.h"
+
+#define PIN_NUM_FILEMODE 35
+
+extern int file_mode;
 
 #endif /* H_MAIN_H */

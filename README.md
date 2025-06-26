@@ -1,6 +1,6 @@
 # X-Laser 矢量激光投影仪
 
-> ![X-Lab超绝肌肉线条.jpg](./4.Docs/assets/X-Lab超绝肌肉线条.jpg)
+> ![X-Lab超绝肌肉线条.jpg](./5.Docs/assets/X-Lab超绝肌肉线条.jpg)
 > X-Laser是我们做的一款小型的矢量激光投影仪，旨在为用户带来全新的激光体验——轻松创建个性化投影，应用于各类场景中。X-Laser以激光搭建虚拟与现实的桥梁，为影像呈现、艺术创造、行车导航等应用提供创意新思路。
 
 本项目基于激光振镜技术，通过振镜的偏移改变激光发射方向，利用人眼视觉暂留效应投影矢量动画。用户可以将激光动画（以ild为后缀的文件）存储到MicroSD卡中，启动后选择“Example”进行播放；也可选择“Draw Now”，在LCD屏幕上绘制自己想要的激光动画进行投影！
@@ -17,7 +17,18 @@ github仓库链接 [https://github.com/zrrraa/X-Laser](https://github.com/zrrraa
 
 B站演示视频 [https://www.bilibili.com/video/BV12m411z7Wr/?vd_source=1d0c07486a3bd3b0adb8ac548bf6453e](https://www.bilibili.com/video/BV12m411z7Wr/?vd_source=1d0c07486a3bd3b0adb8ac548bf6453e)
 
-![整体预览图.JPG](./4.Docs/assets/整体预览图.JPG)
+![整体预览图.JPG](./5.Docs/assets/整体预览图.JPG)
+
+# 0. 更新日志
+
+2024.04.09
+
+* 第一版开源
+
+2025.06.20
+
+* 优化了Draw Now模式下激光“拖尾”的问题，现在离散地线条均可清晰地分开
+* 新增上位机控制，可在PC端实时调试投影。上位机支持SVG转ILDA，ILDA预览功能！
 
 # 1. 项目说明
 
@@ -27,7 +38,7 @@ B站演示视频 [https://www.bilibili.com/video/BV12m411z7Wr/?vd_source=1d0c074
 
 文件夹内是X-Laser的核心电路板原理图和PCB，提供的是立创EDA专业版格式的源文件以及Garber格式的光绘文件。
 
-![系统框图.PNG](./4.Docs/assets/系统总框图.png)
+![系统框图.PNG](./5.Docs/assets/系统总框图.png)
 
 一共两块板子：
 
@@ -44,11 +55,19 @@ Firmware中提供了主控板的固件源码，build文件夹包含预编译好�
 - ILDA文件相关的函数，主要包含在esp32/src/ILDAFile.cpp中。
   代码是在vscode的platformio下架构的，用platformio打开工程，通过CH340连接TX、RX引脚即可烧录固件。
 
-### 1.1.3 3D Model
+### 1.1.3 Software
+
+Software中提供了上位机控制软件的源码，以及编译好的上位机exe文件。源码主要内容如下：
+
+* filepush文件夹中包括了串口发送文件实时投影相关的函数。
+* ilda文件夹中包括了svg转ild格式文件、ild文件预览相关的函数。
+* all_in_one_v3.py集成了所有相关的功能函数，配置好环境后可独立运行，是上位机软件的源码。
+
+### 1.1.4 3D Model
 
 文件夹里是X-Laser结构设计的fusion源工程文件和可直接用于3D打印的模型文件。
 
-### 1.1.4 Docs
+### 1.1.5 Docs
 
 包含了相关的参考文档，包括ILDA文件的文档、可播放的激光动画文件、重要芯片的Datasheet，以及本项目用到的外设的相关参数和物料清单等。
 
@@ -58,11 +77,11 @@ Firmware中提供了主控板的固件源码，build文件夹包含预编译好�
 
 X-Laser的结构设计包括一个只含上下底的框架和四片面板，通过螺栓螺母和螺丝固定。
 
-![总结构设计图.PNG](./4.Docs/assets/总结构设计图.PNG)
+![总结构设计图.PNG](./5.Docs/assets/总结构设计图.PNG)
 
 其中侧面包含了固定激光振镜驱动板的结构，主体框架上包括了固定振镜电机和RGB激光模组的结构。
 
-![三视图.png](./4.Docs/assets/三视图.png)
+![三视图.png](./5.Docs/assets/三视图.png)
 
 Logo面包含了电源总开关的固定螺纹以及SD卡的镂空槽，固定激光振镜驱动板的一面采用连续开槽设计，美化观感以及方便散热。主体框架的斜面上设计了固定TFTLCD屏幕的光孔。两块PCB通过铜柱和排针排母上下固定，竖直安装在背面。若有装配支架的需求，可以购买带磁吸环的支架置于底部。
 
@@ -70,7 +89,7 @@ Logo面包含了电源总开关的固定螺纹以及SD卡的镂空槽，固定�
 
 本项目的固件基于esp-arduino开发，调用了ESP-IDF FreeRTOS的API，很好地同步了多个外设的运作。程序主要流程见下图。
 
-![程序流程图.png](./4.Docs/assets/程序流程图.png)
+![程序流程图.png](./5.Docs/assets/固件程序流程图.png)
 
 X-Laser选用esp32作为主控MCU，通过HSPI驱动DAC芯片控制振镜电机；RGB激光二极管模组由MCU控制信号决定七种颜色；人机交互接口选用了TFTLCD触摸屏，通过VSPI驱动；MicroSD卡采用SDMMC进行通信。
 
@@ -82,7 +101,7 @@ X-Laser选用esp32作为主控MCU，通过HSPI驱动DAC芯片控制振镜电机�
 
 LCD的UI基于SquareLine Studio设计。
 
-![UI.png](./4.Docs/assets/UI.png)
+![UI.png](./5.Docs/assets/UI.png)
 
 SquareLine导出的LVGL库里不能调用自己写的函数，为了使用lv_events.c里的按键回调，目前采用的办法是在此文件中的定义一个变量作为按键状态，在自己写的头文件中声明此变量为外部变量，再在LCD Task中对这个变量做判断，即可在自己的函数文件中写按键事件。
 
@@ -126,7 +145,56 @@ digitalWrite(PIN_NUM_LDAC, LOW);
 digitalWrite(PIN_NUM_LDAC, HIGH);
 ```
 
-# 3. 致谢
+**更新了解决方案：不用延时，改为增加消隐点，见第三章软件架构中关于源码小节对消隐点的说明。**
+
+## 关于PC FilePush
+
+用户可通过拨动侧面的开关来选择上电后的控制模式，分为PC控制和触摸屏控制。拨动开关控制引脚为IO35，可在第一版的基础上通过飞线连接。PC控制下，上位机与X-Laser之间通过串口通信。我们在侧面板上加装了TTL转TypeC母口的模块，可通过USB转TypeC数据线连接X-Laser与PC端上位机。
+
+本质上播放SD卡中的ILDA文件，只不过通过上位机实时将文件从PC发送到X-Laser的SD卡内了。需要在SD卡的根目录下新建文件夹“FilePush”，用于储存上位机发送的文件。
+
+# 3. 软件架构说明
+
+## 关于环境配置
+
+使用python自带的venv创建虚拟环境。
+
+```bash
+python -m venv xlaser # 创建虚拟环境
+.\xlaser\Scripts\activate # 激活虚拟环境，linux下可能要用bash .\xlaser\Scripts\activate
+pip install -r .\requirements.txt # 安装依赖项
+python all_in_one_v3.py # 运行上位机
+```
+
+## 关于编译
+
+使用pyinstaller编译代码为可执行文件。
+
+```bash
+pyinstaller -F -w --add-data "icon.ico;." .\all_in_one_v3.py
+```
+
+我们也提供了打包好的all_in_one_v3.exe文件。
+
+## 关于源码
+
+上位机基于Python开发，支持SVG转ILDA，ILDA预览以及串口发送的功能。程序主要流程见下图。
+
+![上位机程序流程图.png](5.Docs/assets/上位机程序流程图.png "上位机程序流程图")
+
+上位机的图形化界面如下图。
+
+![上位机预览图.png](5.Docs/assets/上位机预览图.png "上位机预览图")
+
+ILDA格式太古老了，网上几乎找不到相关的修改以及查看的软件，于是我们根据5.Docs/ILDA中的说明手册写了个预览功能，目的是把ILDA格式的激光动画转为GIF格式的动画。为了加快处理速度，将预览的GIF分辨率降至200*200，帧率为30帧每秒。
+
+在调试过程中，我们将JSON文件作为ILDA格式转换的中间变量，方便阅读。如有需要了解激光动画具体的坐标数据、颜色数据，可自行研究ilda文件夹中与JSON有关的py代码，包括SVG转JSON，ILDA转JSON，JSON转GIF，JSON转ILDA等。
+
+为了更方便大家定制投影图案，我们开发了SVG转ILDA的功能。目前仅支持包含PATH元素的SVG文件，但网上已有很多方法把各种图形转为仅包含PATH元素的SVG矢量图了。只需对每个元素进行采样，将采样点的坐标和颜色按照ILDA的格式写入即可。为了减少振镜偏转的无效路径，我们对采样点进行了简单的路径规划，在每一个元素的末尾寻找下一个相邻最近元素。注意到激光的“拖尾”问题，我们在每个元素的末尾添加了消隐点，即空白占位点，振镜会在此位置停留，等待激光二极管正确关闭，再移至下一个要投影的点位。消隐点避免了振镜已经偏转但是激光二极管仍未正确关断造成的“拖尾”现象。
+
+SVG的采样参数在大多数情况下都可以按照默认值，但对于某些离散元素过多、图案复杂的情况，或希望深入调试最好投影效果的开发者来说，我们也给予了修改参数的选项，可修改采样密度、最小采样以及消隐点数三个参数。举例，将最小采样和消隐点数从5/10改为2/5可以减少总投影点数，减少复杂图形的频闪现象。
+
+# 4. 致谢
 
 youtube博主atomic14的项目为我们学习ILDA文件的结构解析以及整体代码架构带来了很大的帮助。
 [https://github.com/atomic14/esp32-laser-show/tree/main](https://github.com/atomic14/esp32-laser-show/tree/main)
@@ -141,3 +209,5 @@ Pieski在电路调试上给予了我们很多指导意见，特此致谢。
 
 稚晖君老师的项目开源架构非常完善，具有参考价值，为我们第一次尝试开源提供了很好的学习途径。
 [https://github.com/peng-zhihui/HelloWord-Keyboard/tree/main](https://github.com/peng-zhihui/HelloWord-Keyboard/tree/main)
+
+感谢浙江大学启真交叉学科创新创业实验室提供的项目开发资金，感谢浙江大学集成电路学院IDEA实验室提供的算力支持。

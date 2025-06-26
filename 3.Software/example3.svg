@@ -1,0 +1,36 @@
+<svg width="700" height="200" viewBox="0 0 700 200"
+     xmlns="http://www.w3.org/2000/svg">
+
+  <!-- X 字母 -->
+  <path d="M50,50 L150,150 M150,50 L50,150" stroke="red" fill="none" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- 短横杠（-） -->
+  <path d="M160,100 L190,100" stroke="green" fill="none" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- L 字母 -->
+  <path d="M200,50 L200,140 L260,140" stroke="blue" fill="none" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- A 字母 -->
+  <path d="M290,140 L320,50 L350,140 M302,110 L338,110" stroke="green" fill="none" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- S 字母 -->
+  <path d="
+      M390,80 
+      A10,10 0 0 1 410,100 
+      M410,100 
+      A10,10 0 0 1 390,120
+  " stroke="green" fill="none" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- E 字母 -->
+  <path d="M450,50 L450,140 
+           M450,50 L500,50 
+           M450,95 L490,95 
+           M450,140 L500,140" stroke="blue" fill="none" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- R 字母 -->
+  <path d="M530,50 L530,140 
+           M530,50 L570,50 
+           C590,50 590,80 570,100 
+           L530,100 
+           M570,100 L600,140" stroke="red" fill="none" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

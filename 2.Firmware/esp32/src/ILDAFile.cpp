@@ -122,43 +122,98 @@ bool ILDAFile::tickNextFrame()
     // ESP_LOGI(TAGILDA, "DrawNow mode, tick a record!");
 
     // 激光状态标记位，保证画迹断开后的第一个点不亮，防止曲线自动封闭
+    // 25.03.28修改，每个独立路径的起始点和结束点都不亮，才能防止曲线封闭
     // ESP_LOGI(TAGILDA, "DrawNow mode, tick a record!, X_Position: %d, Y_Position: %d, X_Position_Old: %d, Y_Position_Old: %d", X_Position, Y_Position, X_Position_Old, Y_Position_Old);
+    // 激光状态标记位处理
     if (abs(X_Position_Old - X_Position) > 20 || abs(Y_Position_Old - Y_Position) > 20)
     {
-      ilda->frames[0].records[DrawNow_records_position].status_code = 0b01000000; // 不亮的状态码
+      // 新path开始
+      printf("DrawNow_records_position: %d\n", DrawNow_records_position);
+      // 处理旧路径结束点（非首条路径）
+      if (DrawNow_records_position > 0)
+      {
+        int end_x = X_Position_Old;
+        int end_y = Y_Position_Old;
+        for (int i = 0; i < 10; i++)
+        {
+          ilda->frames[0].records[DrawNow_records_position].status_code = 0b01000000; // 不亮状态
+          ilda->frames[0].records[DrawNow_records_position].color = 0;                // 颜色置零
+          ilda->frames[0].records[DrawNow_records_position].x = end_x;
+          ilda->frames[0].records[DrawNow_records_position].y = end_y;
+          DrawNow_records_position++;
+          ilda->frames[0].number_records++;
+        }
+      }
+
+      // 处理新路径起始点（包含首条路径）
+      int start_x = X_Position;
+      int start_y = Y_Position;
+      for (int i = 0; i < 10; i++)
+      {
+        ilda->frames[0].records[DrawNow_records_position].status_code = 0b01000000; // 不亮状态
+        ilda->frames[0].records[DrawNow_records_position].color = 0;                // 颜色置零
+        ilda->frames[0].records[DrawNow_records_position].x = start_x;
+        ilda->frames[0].records[DrawNow_records_position].y = start_y;
+        DrawNow_records_position++;
+        ilda->frames[0].number_records++;
+      }
+
+      // 当前点设为正常状态
+      ilda->frames[0].records[DrawNow_records_position].status_code = 0b00000000;
+
+      // 颜色处理逻辑
+      ilda->frames[0].records[DrawNow_records_position].color = 0;
+      lv_color_t color = lv_colorwheel_get_rgb(ui_Colorwheel1);
+      if (LV_COLOR_GET_R(color) > 15)
+        ilda->frames[0].records[DrawNow_records_position].color |= 0b11100000; // 红色通道
+      if (LV_COLOR_GET_G(color) > 31)
+        ilda->frames[0].records[DrawNow_records_position].color |= 0b00011000; // 绿色通道
+      if (LV_COLOR_GET_B(color) > 15)
+        ilda->frames[0].records[DrawNow_records_position].color |= 0b00000111; // 蓝色通道
+
+      // 坐标更新与记录
+      ilda->frames[0].records[DrawNow_records_position].x = X_Position;
+      ilda->frames[0].records[DrawNow_records_position].y = Y_Position;
+      X_Position_Old = X_Position;
+      Y_Position_Old = Y_Position;
+      DrawNow_records_position++;
+      ilda->frames[0].number_records++;
     }
     else
     {
+      // 在一条path中
+      int current_pos = DrawNow_records_position;
       ilda->frames[0].records[DrawNow_records_position].status_code = 0b00000000;
+      // 追加10个不亮点
+      for (int i = 0; i < 10; i++)
+      {
+        int blank_pos = current_pos + 1 + i;
+        ilda->frames[0].records[blank_pos].status_code = 0b01000000; // 不亮状态
+        ilda->frames[0].records[blank_pos].color = 0;                // 颜色置零
+        ilda->frames[0].records[blank_pos].x = X_Position;
+        ilda->frames[0].records[blank_pos].y = Y_Position;
+      }
+
+      // 颜色处理逻辑
+      ilda->frames[0].records[DrawNow_records_position].color = 0;
+      lv_color_t color = lv_colorwheel_get_rgb(ui_Colorwheel1);
+      if (LV_COLOR_GET_R(color) > 15)
+        ilda->frames[0].records[DrawNow_records_position].color |= 0b11100000; // 红色通道
+      if (LV_COLOR_GET_G(color) > 31)
+        ilda->frames[0].records[DrawNow_records_position].color |= 0b00011000; // 绿色通道
+      if (LV_COLOR_GET_B(color) > 15)
+        ilda->frames[0].records[DrawNow_records_position].color |= 0b00000111; // 蓝色通道
+
+      // 坐标更新与记录
+      ilda->frames[0].records[DrawNow_records_position].x = X_Position;
+      ilda->frames[0].records[DrawNow_records_position].y = Y_Position;
+      X_Position_Old = X_Position;
+      Y_Position_Old = Y_Position;
+
+      // 更新记录指针
+      DrawNow_records_position = current_pos + 1;        // 返回最后一个非空白点
+      ilda->frames[0].number_records = current_pos + 11; // 总记录数包含10个空白点
     }
-    X_Position_Old = X_Position;
-    Y_Position_Old = Y_Position;
-
-    // 色轮颜色信息处理，将颜色信息存到用8位的color中
-    ilda->frames[0].records[DrawNow_records_position].color = 0;
-    lv_color_t color = lv_colorwheel_get_rgb(ui_Colorwheel1);
-    if (LV_COLOR_GET_R(color) > 15)
-    {
-      ilda->frames[0].records[DrawNow_records_position].color |= 0b11100000;
-    }
-
-    if (LV_COLOR_GET_G(color) > 31)
-    {
-      ilda->frames[0].records[DrawNow_records_position].color |= 0b00011000;
-    }
-
-    if (LV_COLOR_GET_B(color) > 15)
-    {
-      ilda->frames[0].records[DrawNow_records_position].color |= 0b00000111;
-    }
-
-    ilda->frames[0].records[DrawNow_records_position].x = X_Position;
-    ilda->frames[0].records[DrawNow_records_position].y = Y_Position;
-
-    // ESP_LOGI(TAGILDA, "DrawNow mode, tick a record! x: %d, y: %d, color: %d, status_code: %d", X_Position, Y_Position, ilda->frames[0].records[DrawNow_records_position].color, ilda->frames[0].records[DrawNow_records_position].status_code);
-
-    DrawNow_records_position++;
-    ilda->frames[0].number_records++;
 
     return false; // 存完这个点就让fileBufferLoop阻塞
   }

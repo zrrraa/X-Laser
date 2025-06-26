@@ -4,7 +4,7 @@ const int bufferFrames = 6;
 static const char *TAGRENDERER = "SPI";
 
 SPIRenderer *renderer;
-DynamicJsonDocument doc(4096);
+DynamicJsonDocument doc(8192);
 JsonArray avaliableMedia = doc.to<JsonArray>();
 int curMedia = -1;
 
@@ -255,7 +255,7 @@ void IRAM_ATTR SPIRenderer::draw()
         digitalWrite(PIN_NUM_LASER_R, HIGH);
         digitalWrite(PIN_NUM_LASER_G, HIGH);
         digitalWrite(PIN_NUM_LASER_B, HIGH);
-        delay(5); // 保证曲线断开
+        // delay(5); // 保证曲线断开
       }
 
       // DAC输出刷新
@@ -341,7 +341,7 @@ void SPIRenderer::start()
 // 读取SD卡中的某个ILDA文件
 void nextMedia(int position)
 {
-  ESP_LOGI(TAGRENDERER, "NextMedia begin!");
+  // ESP_LOGI(TAGRENDERER, "NextMedia begin!");
 
   curMedia = curMedia + position;
 
@@ -353,7 +353,18 @@ void nextMedia(int position)
   {
     curMedia = 0;
   }
-  String filePath = String("/ILDA/") += avaliableMedia[curMedia].as<String>();
+
+  String filePath;
+
+  if (file_mode == 1)
+  {
+    filePath = String("/ILDA/") + avaliableMedia[curMedia].as<String>();
+  }
+  else
+  {
+    filePath = String("/FilePush/") + avaliableMedia[curMedia].as<String>();
+  }
+
   ilda->cur_frame = 0;
   ilda->read(SD_MMC, filePath.c_str()); // 打印出header说明已经播放完一次完整的动画了
   // ESP_LOGI(TAGRENDERER, "Reading file is successfully");
