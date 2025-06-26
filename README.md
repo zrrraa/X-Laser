@@ -9,6 +9,7 @@
 
 - 两块核心板的电路设计原理图和PCB
 - MCU固件源码及屏幕UI工程源文件
+- 上位机软件源码
 - 外壳设计结构工程源文件
 
 github仓库链接 [https://github.com/zrrraa/X-Laser](https://github.com/zrrraa/X-Laser)
