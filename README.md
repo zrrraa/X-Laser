@@ -35,6 +35,10 @@ B站演示视频
 * 优化了Draw Now模式下激光“拖尾”的问题，现在离散地线条均可清晰地分开
 * 新增上位机控制，可在PC端实时调试投影。上位机支持SVG转ILDA，ILDA预览功能！
 
+2026.03.13
+
+- 优化了上位机的 blank transition，激光动画生成的质量更高了
+
 # 1. 项目说明
 
 ## 1.1 项目文件架构
@@ -64,9 +68,8 @@ Firmware中提供了主控板的固件源码，build文件夹包含预编译好�
 
 Software中提供了上位机控制软件的源码，以及编译好的上位机exe文件。源码主要内容如下：
 
-* filepush文件夹中包括了串口发送文件实时投影相关的函数。
-* ilda文件夹中包括了svg转ild格式文件、ild文件预览相关的函数。
-* all_in_one_v3.py集成了所有相关的功能函数，配置好环境后可独立运行，是上位机软件的源码。
+* all_in_one_v4.py集成了所有相关的功能函数，配置好环境后可独立运行，是上位机软件的源码。
+* example_svg 中包括了一些 SVG 图形的示例。
 
 ### 1.1.4 3D Model
 
@@ -133,24 +136,7 @@ esp32的上电自启动需要BOOT拉高，虽然BOOT默认上拉，但在最后�
 
 ## 关于DrawNow模式
 
-触摸屏的刷新和读取触摸点有频率限制，因此“缓慢”地绘制效果更好。绘制激光动画时，激光二极管需要在两条连续的曲线之间关闭，等待振镜偏移后再开启，否则会让整个图案封闭。在ILDA文件中已考虑到这些地方并做了路径规划。在DrawNow模式下，关断激光二极管等待振镜偏移后再开启仍有视觉暂留的效果，加入少量延时有改善，测试中5ms最佳，延时多了会导致动画频闪。
-
-```
-……
-else
-{
-    digitalWrite(PIN_NUM_LASER_R, HIGH);
-    digitalWrite(PIN_NUM_LASER_G, HIGH);
-    digitalWrite(PIN_NUM_LASER_B, HIGH);
-    delay(5); // 保证曲线断开
-}
-
-// DAC输出刷新
-digitalWrite(PIN_NUM_LDAC, LOW);
-digitalWrite(PIN_NUM_LDAC, HIGH);
-```
-
-**更新了解决方案：不用延时，改为增加消隐点，见第三章软件架构中关于源码小节对消隐点的说明。**
+触摸屏的刷新和读取触摸点有频率限制，因此“缓慢”地绘制效果更好。绘制激光动画时，激光二极管需要在两条连续的曲线之间关闭，等待振镜偏移后再开启，否则会让整个图案封闭，因此需要加入 blank transition。
 
 ## 关于PC FilePush
 
@@ -168,7 +154,7 @@ digitalWrite(PIN_NUM_LDAC, HIGH);
 python -m venv xlaser # 创建虚拟环境
 .\xlaser\Scripts\activate # 激活虚拟环境，linux下可能要用bash .\xlaser\Scripts\activate
 pip install -r .\requirements.txt # 安装依赖项
-python all_in_one_v3.py # 运行上位机
+python all_in_one_v4.py # 运行上位机
 ```
 
 ## 关于编译
@@ -176,10 +162,10 @@ python all_in_one_v3.py # 运行上位机
 使用pyinstaller编译代码为可执行文件。
 
 ```bash
-pyinstaller -F -w --add-data "icon.ico;." .\all_in_one_v3.py
+pyinstaller -F -w --add-data "icon.ico;." .\all_in_one_v4.py
 ```
 
-我们也提供了打包好的all_in_one_v3.exe文件。
+我们也提供了打包好的all_in_one_v4.exe文件。
 
 ## 关于源码
 
@@ -189,15 +175,9 @@ pyinstaller -F -w --add-data "icon.ico;." .\all_in_one_v3.py
 
 上位机的图形化界面如下图。
 
-![上位机预览图.png](5.Docs/assets/上位机预览图.png "上位机预览图")
+![上位机预览图.png](5.Docs/assets/上位机预览图.png "上位机预览图")ILDA格式太古老了，网上几乎找不到相关的修改以及查看的软件，于是我们根据5.Docs/ILDA中的说明手册写了个预览功能，目的是把ILDA格式的激光动画转为GIF格式的动画。
 
-ILDA格式太古老了，网上几乎找不到相关的修改以及查看的软件，于是我们根据5.Docs/ILDA中的说明手册写了个预览功能，目的是把ILDA格式的激光动画转为GIF格式的动画。为了加快处理速度，将预览的GIF分辨率降至200*200，帧率为30帧每秒。
-
-在调试过程中，我们将JSON文件作为ILDA格式转换的中间变量，方便阅读。如有需要了解激光动画具体的坐标数据、颜色数据，可自行研究ilda文件夹中与JSON有关的py代码，包括SVG转JSON，ILDA转JSON，JSON转GIF，JSON转ILDA等。
-
-为了更方便大家定制投影图案，我们开发了SVG转ILDA的功能。目前仅支持包含PATH元素的SVG文件，但网上已有很多方法把各种图形转为仅包含PATH元素的SVG矢量图了。只需对每个元素进行采样，将采样点的坐标和颜色按照ILDA的格式写入即可。为了减少振镜偏转的无效路径，我们对采样点进行了简单的路径规划，在每一个元素的末尾寻找下一个相邻最近元素。注意到激光的“拖尾”问题，我们在每个元素的末尾添加了消隐点，即空白占位点，振镜会在此位置停留，等待激光二极管正确关闭，再移至下一个要投影的点位。消隐点避免了振镜已经偏转但是激光二极管仍未正确关断造成的“拖尾”现象。
-
-SVG的采样参数在大多数情况下都可以按照默认值，但对于某些离散元素过多、图案复杂的情况，或希望深入调试最好投影效果的开发者来说，我们也给予了修改参数的选项，可修改采样密度、最小采样以及消隐点数三个参数。举例，将最小采样和消隐点数从5/10改为2/5可以减少总投影点数，减少复杂图形的频闪现象。
+为了更方便大家定制投影图案，我们开发了SVG转ILDA的功能。目前仅支持包含PATH元素的SVG文件，但网上已有很多方法把各种图形转为仅包含PATH元素的SVG矢量图了。只需对每个元素进行采样，将采样点的坐标和颜色按照ILDA的格式写入即可。我们对采样点进行了简单的路径规划，在线条跳转时生成非线性的 blank transition。为了兼容不同场景下对投影质量和稳定性（频闪）的不同需求，我们在上位机设置了投影质量的调参选项。
 
 # 4. 致谢
 
@@ -215,4 +195,4 @@ Pieski在电路调试上给予了我们很多指导意见，特此致谢。
 稚晖君老师的项目开源架构非常完善，具有参考价值，为我们第一次尝试开源提供了很好的学习途径。
 [https://github.com/peng-zhihui/HelloWord-Keyboard/tree/main](https://github.com/peng-zhihui/HelloWord-Keyboard/tree/main)
 
-感谢浙江大学启真交叉学科创新创业实验室提供的项目开发资金，感谢浙江大学集成电路学院IDEA实验室提供的算力支持。
+感谢浙江大学启真交叉学科创新创业实验室提供的项目启动资金。
