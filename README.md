@@ -9,7 +9,7 @@
 
 - 两块核心板的电路设计原理图和 PCB
 - MCU 固件源码及屏幕 UI 工程源文件
-- 上位机软件、示例文件与使用说明
+- 上位机发布包、示例文件与使用说明
 - 外壳设计结构工程源文件
 
 GitHub 仓库链接 [https://github.com/zrrraa/X-Laser](https://github.com/zrrraa/X-Laser)
@@ -49,7 +49,7 @@ B 站演示视频
 
 ### 1.1.1 Hardware
 
-文件夹内是 X-Laser 的核心电路板原理图和 PCB，提供的是立创 EDA 专业版格式的源文件以及 Garber 格式的光绘文件。
+文件夹内是 X-Laser 的核心电路板原理图和 PCB，提供的是立创 EDA 专业版格式的源文件以及 Gerber 格式的光绘文件。
 
 ![系统框图.PNG](./5.Docs/assets/系统总框图.png)
 
@@ -70,10 +70,10 @@ Firmware 中提供了主控板的固件工程和屏幕 UI 工程。源码主要�
 
 ### 1.1.3 Software
 
-Software 中提供当前推荐使用的 LaserTab 上位机程序、示例 SVG 和发布文件。
+Software 中提供当前推荐使用的 LaserTab 上位机发布说明、示例 SVG 和使用说明。正式软件包通过 GitHub Releases 发布。
 
-* `LaserTab.exe` 是当前推荐使用的 Windows 便携版上位机程序，双击即可运行。
-* `releases/LaserTab/0.1.0/` 中保存 LaserTab 0.1.0 的正式发布产物，包括便携版和安装包。
+* [Releases](https://github.com/zrrraa/X-Laser/releases) 中提供 LaserTab 的 Windows 安装包、便携版程序和 ESP32 固件包。
+* `releases/LaserTab/` 中保存各版本的发布说明。
 * `emaple_svg/` 中包含可用于体验 SVG 转 ILDA 的示例 SVG 文件。
 
 ### 1.1.4 3D Model
@@ -149,7 +149,7 @@ ESP32 的上电自启动需要 BOOT 拉高，虽然 BOOT 默认上拉，但在�
 
 # 3. 软件使用说明
 
-当前推荐使用 `3.Software/LaserTab.exe` 直接运行上位机，也可以在 `3.Software/releases/LaserTab/0.1.0/` 中选择安装包安装。LaserTab 用于把 SVG 或 ILD 文件转换、预览和导出为适合 X-Laser 播放的 ILDA 文件。
+当前推荐从 [GitHub Releases](https://github.com/zrrraa/X-Laser/releases) 下载最新版本的 LaserTab。普通用户建议下载 Windows 安装包，也可以下载便携版程序直接运行。LaserTab 用于把 SVG 或 ILD 文件转换、预览和导出为适合 X-Laser 播放的 ILDA 文件。
 
 主要功能包括：
 
@@ -158,7 +158,7 @@ ESP32 的上电自启动需要 BOOT 拉高，虽然 BOOT 默认上拉，但在�
 * 直接预览 ILD 命令轨迹，也可以用内置物理仿真器预览接近真实投影的效果。
 * 调节输出质量、XY 平移缩放、振镜带宽、激光功率、光斑半径等参数，在流畅度和精度之间做取舍。
 * 支持多帧 ILD 动画预览。
-* 启动时检查软件更新，发现新版本时可在软件内下载安装。
+* 安装包版本会在启动时检查签名更新清单，发现新版本时可在软件内下载安装；便携版可以直接从 Releases 下载新版替换。
 
 LaserTab 0.1.0 的图形化界面如下图。
 

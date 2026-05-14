@@ -1,4 +1,4 @@
-# LaserTab 0.1.0
+# 0.1.0
 
 This is the first public LaserTab desktop release for X-Laser users.
 
@@ -9,7 +9,8 @@ The executable and installer files are distributed as GitHub Release assets:
 - `LaserTab.exe`: portable Windows executable. Download and run directly.
 - `LaserTab_0.1.0_x64-setup.exe`: Windows installer.
 - `LaserTab_0.1.0_x64_en-US.msi`: Windows MSI installer.
-- `*.sig`: update signature files used by LaserTab automatic updates.
+
+Update signatures are embedded in the public updater manifest and are not distributed as user-facing release assets.
 
 ## Highlights
 

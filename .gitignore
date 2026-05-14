@@ -10,3 +10,10 @@ output.ild
 2.Firmware/UI/autosave/
 2.Firmware/UI/backup/
 2.Firmware/UI/cache/
+AGENTS.md
+
+# Local/reference images not used by README.
+5.Docs/assets/三视图.jpg
+5.Docs/assets/上位机程序流程图.png
+5.Docs/assets/上位机预览图.png
+5.Docs/assets/总结构设计图.png

@@ -1,0 +1,11 @@
+{
+  "version": "0.1.0",
+  "notes": "0.1.0 public release.",
+  "pub_date": "2026-05-14T00:00:00Z",
+  "platforms": {
+    "windows-x86_64": {
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSb05kbVhWODlkNVljY0lJMFNzeTZCKzloRXk2N2ltL0tlMGpkZk9pY0NzeFk4c3RoT0JFRGw0bW55bmd3aWcybEd0VmFUZklZVS95VE5zNTVESVRpT1VuV2FFZVFuc2cwPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzc4NzM1NjY2CWZpbGU6TGFzZXJUYWJfMC4xLjBfeDY0LXNldHVwLmV4ZQpENDNRNGkyRkw2VHdjWWdkNTVSVTVkb1hRNWo5YjNqaGh0Rmg2L2k4d0N1dlR2OWswVGh0Q3VSVnJ6RlVtZlVwUko2V0N2MGVqN2xzY0w2bE1OdUNBUT09Cg==",
+      "url": "https://github.com/zrrraa/X-Laser/releases/download/v0.1.0/LaserTab_0.1.0_x64-setup.exe"
+    }
+  }
+}

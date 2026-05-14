@@ -1,4 +1,4 @@
-# LaserTab 0.0.5
+# 0.0.5
 
 This release keeps the previous X-Laser desktop software version available for users who need the older workflow.
 
