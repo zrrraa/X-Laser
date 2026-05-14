@@ -1,0 +1,5 @@
+<svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+  <path d="M 8 14 L 112 14" stroke="red" fill="none"/>
+  <path d="M 112 28 L 8 28" stroke="green" fill="none"/>
+  <path d="M 8 42 L 112 42" stroke="blue" fill="none"/>
+</svg>

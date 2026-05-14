@@ -1,0 +1,15 @@
+<svg viewBox="0 0 180 80" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <title>LaserTab compatibility: defs, symbol, use, href, and xlink href</title>
+  <defs>
+    <path id="dash" d="M 0 0 L 28 0" stroke="red" fill="none"/>
+    <symbol id="ring" viewBox="0 0 20 20">
+      <circle cx="10" cy="10" r="8" fill="currentColor"/>
+    </symbol>
+  </defs>
+  <use href="#dash" x="18" y="18" stroke="green"/>
+  <use xlink:href="#dash" x="18" y="40" stroke="cyan"/>
+  <use href="#ring" x="76" y="10" width="34" height="34" color="magenta"/>
+  <g transform="translate(130 20) rotate(18)">
+    <use href="#ring" width="30" height="30" color="yellow"/>
+  </g>
+</svg>

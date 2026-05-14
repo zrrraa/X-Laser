@@ -1,0 +1,12 @@
+.pytest_cache/
+__pycache__/
+*.py[cod]
+output.gif
+output.ild
+3.Software/LaserTab.exe
+3.Software/releases/**/*.exe
+3.Software/releases/**/*.msi
+3.Software/releases/**/*.sig
+2.Firmware/UI/autosave/
+2.Firmware/UI/backup/
+2.Firmware/UI/cache/

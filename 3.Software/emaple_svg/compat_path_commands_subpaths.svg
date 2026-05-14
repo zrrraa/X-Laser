@@ -1,0 +1,9 @@
+<svg viewBox="0 0 180 120" xmlns="http://www.w3.org/2000/svg">
+  <title>LaserTab compatibility: path commands, arcs, smooth curves, and separated subpaths</title>
+  <path d="M 16 28 H 54 V 54 H 16 Z
+           M 72 54 C 84 8 110 8 122 54 S 158 100 166 26"
+        stroke="red" fill="none"/>
+  <path d="M 22 92 Q 48 54 76 92 T 130 92" stroke="green" fill="none"/>
+  <path d="M 52 78 A 22 16 0 1 1 96 78 A 22 16 0 1 1 52 78" stroke="blue" fill="none"/>
+  <path d="M 144 74 l 18 0 l -9 18 z" stroke="yellow" fill="none"/>
+</svg>

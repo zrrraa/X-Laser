@@ -1,0 +1,15 @@
+<svg viewBox="0 0 180 90" xmlns="http://www.w3.org/2000/svg">
+  <title>LaserTab compatibility: nested svg viewport, marker definitions, and style inheritance</title>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 Z" fill="yellow"/>
+    </marker>
+  </defs>
+  <g stroke="white" fill="none">
+    <svg x="18" y="16" width="56" height="42" viewBox="0 0 20 20">
+      <path d="M 2 10 L 10 2 L 18 10 L 10 18 Z" stroke="red"/>
+    </svg>
+    <path d="M 96 26 L 146 26" stroke="green" marker-end="url(#arrow)"/>
+    <path d="M 96 54 L 146 54" stroke="blue" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+  </g>
+</svg>

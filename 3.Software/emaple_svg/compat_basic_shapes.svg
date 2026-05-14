@@ -1,0 +1,10 @@
+<svg viewBox="0 0 160 100" xmlns="http://www.w3.org/2000/svg">
+  <title>LaserTab compatibility: basic SVG geometry elements</title>
+  <rect x="8" y="10" width="34" height="24" fill="none" stroke="red"/>
+  <rect x="54" y="8" width="38" height="28" rx="8" ry="5" fill="none" stroke="green"/>
+  <circle cx="124" cy="23" r="15" fill="none" stroke="blue"/>
+  <ellipse cx="32" cy="70" rx="24" ry="12" fill="none" stroke="cyan"/>
+  <line x1="72" y1="58" x2="105" y2="82" stroke="magenta"/>
+  <polyline points="114,80 124,58 136,80 148,58" fill="none" stroke="yellow"/>
+  <polygon points="78,48 95,50 99,67 84,76 70,66" fill="none" stroke="white"/>
+</svg>

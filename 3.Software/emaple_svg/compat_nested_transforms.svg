@@ -1,0 +1,13 @@
+<svg viewBox="0 0 180 120" xmlns="http://www.w3.org/2000/svg">
+  <title>LaserTab compatibility: nested translate, rotate, scale, and matrix transforms</title>
+  <g fill="none" stroke="white" transform="translate(90 60)">
+    <g transform="rotate(-18) scale(1.05 0.75)">
+      <rect x="-48" y="-24" width="96" height="48" rx="10" stroke="green"/>
+      <path d="M -42 0 L 42 0" stroke="red"/>
+    </g>
+    <g transform="matrix(0.72 0.28 -0.22 0.88 0 0)">
+      <ellipse cx="0" cy="0" rx="34" ry="18" stroke="cyan"/>
+      <path d="M -24 -14 C -4 -36 22 -30 30 -8" stroke="magenta"/>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,16 @@
+<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <path d="M 60 8
+           C 88 8 112 32 112 60
+           C 112 88 88 112 60 112
+           C 32 112 8 88 8 60
+           C 8 32 32 8 60 8 Z"
+        stroke="white" fill="none"/>
+  <path d="M 34 26 C 44 26 52 34 52 44 C 52 54 44 62 34 62 C 24 62 16 54 16 44 C 16 34 24 26 34 26 Z"
+        stroke="cyan" fill="none"/>
+  <path d="M 86 26 C 96 26 104 34 104 44 C 104 54 96 62 86 62 C 76 62 68 54 68 44 C 68 34 76 26 86 26 Z"
+        stroke="magenta" fill="none"/>
+  <path d="M 34 70 C 44 70 52 78 52 88 C 52 98 44 106 34 106 C 24 106 16 98 16 88 C 16 78 24 70 34 70 Z"
+        stroke="green" fill="none"/>
+  <path d="M 86 70 C 96 70 104 78 104 88 C 104 98 96 106 86 106 C 76 106 68 98 68 88 C 68 78 76 70 86 70 Z"
+        stroke="red" fill="none"/>
+</svg>

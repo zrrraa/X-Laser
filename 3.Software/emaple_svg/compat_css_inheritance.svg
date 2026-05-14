@@ -1,0 +1,17 @@
+<svg viewBox="0 0 160 80" xmlns="http://www.w3.org/2000/svg">
+  <title>LaserTab compatibility: inherited styles and common CSS selectors</title>
+  <style>
+    path.primary { stroke: #ff2020; fill: none; }
+    svg .secondary { stroke: rgb(0 255 0); fill: none; }
+    #accent { stroke: blue; fill: none; }
+  </style>
+  <g stroke="white" fill="none">
+    <path d="M 10 16 L 50 16" class="primary"/>
+    <g class="secondary" transform="translate(0 18)">
+      <line x1="10" y1="16" x2="50" y2="16"/>
+      <polyline points="62,12 76,24 90,12"/>
+    </g>
+    <path id="accent" d="M 108 16 C 120 0 140 32 152 16"/>
+    <path d="M 108 52 Q 130 28 152 52" stroke="currentColor" color="cyan"/>
+  </g>
+</svg>

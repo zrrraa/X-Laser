@@ -1,0 +1,17 @@
+<svg viewBox="0 0 140 80" xmlns="http://www.w3.org/2000/svg">
+  <title>LaserTab compatibility: scoped CSS selectors, CSS colors, and unit lengths</title>
+  <style>
+    g.redLayer path { stroke: rgb(100% 0% 0%); fill: none; }
+    g.blueLayer path { stroke: hsl(240 100% 50%); fill: none; }
+    circle.unitCircle { stroke: #00ff00cc; fill: none; }
+    rect.currentColorBox { stroke: currentColor; color: hsl(180 100% 50%); fill: none; }
+  </style>
+  <g class="redLayer">
+    <path d="M 10 16 L 48 16"/>
+  </g>
+  <g class="blueLayer">
+    <path d="M 10 32 L 48 32"/>
+  </g>
+  <circle class="unitCircle" cx="78px" cy="24px" r="12px"/>
+  <rect class="currentColorBox" x="100px" y="14px" width="28px" height="28px"/>
+</svg>

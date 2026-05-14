@@ -1,0 +1,10 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <title>LaserTab compatibility: fill-only icon artwork converted to laser outlines</title>
+  <style>
+    .ink { fill: #000; }
+    .hot { fill: #ff0000; }
+  </style>
+  <polygon class="ink" points="50,8 92,92 8,92"/>
+  <circle class="hot" cx="50" cy="58" r="18"/>
+  <path fill="rgb(0 0 0)" d="M 32 34 C 40 24 60 24 68 34 C 58 30 42 30 32 34 Z"/>
+</svg>
